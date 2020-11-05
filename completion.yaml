@@ -1,0 +1,11 @@
+name: config-scheme
+flags:
+  - help
+  - quiet
+commands:
+  - name: help
+  - name: add
+  - name: list
+  - name: view
+  - name: edit
+  - name: remove

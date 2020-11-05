@@ -1,0 +1,93 @@
+{
+  "name": "helm-config-scheme",
+  "engines": {
+    "node": ">=10",
+    "yarn": ">=1"
+  },
+  "private": true,
+  "scripts": {
+    "ci": "yarn lint",
+    "lint": "yarn lint:prettier && yarn lint:commit",
+    "lint:commit": "commitlint --from=$( git rev-list --tags --max-count=1 )",
+    "lint:prettier": "yarn prettier -l '**/*.{md,yaml}'",
+    "lint:prettier:fix": "yarn prettier --write '**/*.{md,yaml}'"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "body-leading-blank": [
+        2,
+        "always"
+      ],
+      "scope-enum": [
+        2,
+        "always",
+        [
+          "deps",
+          "deps-dev"
+        ]
+      ],
+      "type-enum": [
+        2,
+        "always",
+        [
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "release",
+          "style",
+          "test"
+        ]
+      ],
+      "body-max-line-length": [
+        0
+      ]
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "husky": "4.3.0",
+    "lint-staged": "10.5.1",
+    "prettier": "2.1.2",
+    "semantic-release": "17.2.2",
+    "@semantic-release/changelog": "5.0.1",
+    "@semantic-release/commit-analyzer": "8.0.1",
+    "@semantic-release/exec": "5.0.0",
+    "@semantic-release/git": "9.0.0",
+    "@semantic-release/github": "7.1.1",
+    "@semantic-release/npm": "7.0.6",
+    "@semantic-release/release-notes-generator": "9.0.1"
+  }
+}
