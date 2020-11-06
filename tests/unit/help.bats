@@ -9,6 +9,12 @@ load '../bats/extensions/bats-file/load'
     run helm plugin list
     assert_success
     assert_output --partial 'config-scheme'
+
+    if is_windows; then
+        assert_file_exist ".bin/yq.exe"
+    else
+        assert_file_exist ".bin/yq"
+    fi
 }
 
 @test "help: helm config-scheme show help" {

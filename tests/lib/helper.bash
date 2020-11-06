@@ -38,6 +38,9 @@ setup() {
 
     # Use a temporary config-repository reseted after every suite
     export HELM_CONFIG_SCHEME_REPOSITORY="${TEST_TEMP_DIR}/config-repository"
+    export HELM_CONFIG_SCHEME_TMP_DIR="${TEST_TEMP_DIR}/config-tmp"
+
+    mkdir -p "${HELM_CONFIG_SCHEME_TMP_DIR}"
 
     # shellcheck disable=SC2034
     XDG_DATA_HOME="${HOME}"
@@ -48,7 +51,6 @@ setup() {
     APPDATA="${HOME}"
 
     # install helm plugin
-    helm_plugin_install git
     helm plugin install "${GIT_ROOT}"
 
     # copy .kube from real home

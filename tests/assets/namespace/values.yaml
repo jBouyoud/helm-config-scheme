@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    ns/values.yaml: 'true'

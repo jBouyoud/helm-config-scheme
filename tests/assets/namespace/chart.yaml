@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    ns/chart.yaml: 'true'

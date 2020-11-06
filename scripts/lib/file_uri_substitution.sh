@@ -36,3 +36,151 @@ file_uri_subst() {
 
     echo "${file_uri}" | sed 's/{{/${/g' | sed 's/}}/}/g'
 }
+
+unset_subst_args() {
+    unset namespace chart release
+}
+
+export_subst_args() {
+    # shellcheck disable=SC2034
+    export namespace="${HELM_NAMESPACE:-unknown}"
+    # shellcheck disable=SC2034
+    export chart="CHART-NAME"
+    # shellcheck disable=SC2034
+    export release="RELEASE-NAME"
+    # shellcheck disable=SC2086
+    _get_subst_args_value ${1}
+
+    # Refine chart value
+    if [ -d "${chart}" ]; then
+        chart="$(realpath "${chart}")"
+    fi
+    chart="$(basename "${chart}")"
+    # Remove Semver
+    chart="$(echo "${chart}" | sed -E 's/(.+)-[0-9]+\.[0-9]+\.[0-9]+(-.+)?/\1/')"
+    # Remove ext
+    chart="${chart%%.*}"
+
+    log_info "[substitution] Args namespace=${namespace}, chart=${chart}, release=${release}"
+}
+
+_get_subst_args_value() {
+    args=""
+
+    # Remove all flags, and put all args into var
+    i=1
+    while [ "$i" -le "$#" ]; do
+        eval "arg=\${$i}"
+        # shellcheck disable=SC2154
+        is_flag="$(_is_helm_flag "${arg}")"
+
+        if [ "${is_flag}" -gt 0 ]; then
+            i=$((i + is_flag))
+        else
+            args="${args} ${arg}"
+            i=$((i + 1))
+        fi
+    done
+
+    log_info "[substitution] analyzing arguments $args"
+    # shellcheck disable=SC2086
+    set -- $args
+
+    while [ $# -gt 0 ]; do
+        case "${1:-}" in
+        lint)
+            return
+            ;;
+        template)
+            if [ $# -ge 3 ]; then
+                release="${2}"
+                chart="${3}"
+            else
+                chart="${2}"
+            fi
+            return
+            ;;
+        install | upgrade)
+            release="${2}"
+            chart="${3}"
+            return
+            ;;
+        esac
+        shift
+    done
+}
+
+_is_helm_flag() {
+    case "${1:-}" in
+    # Global Flags :: Key, Value
+    --repository-config | --repository-cache | --registry-config | -n | --namespace | \
+        --kubeconfig | --kube-token | --kube-context | --kube-as-user | --kube-as-group | \
+        --kube-apiserver)
+        echo 2
+        ;;
+    # Global Flags :: Key
+    -h | --help | --debug)
+        echo 1
+        ;;
+    # Value Options Flags https://github.com/helm/helm/blob/master/cmd/helm/flags.go#L41
+    -f | --values | --set | --set-string | --set-file)
+        echo 2
+        ;;
+    # ChartPathOptionsFlags https://github.com/helm/helm/blob/master/cmd/helm/flags.go#L48
+    --version | --keyring | --repo | --username | --password | --cert-file | --key-file | --ca-file)
+        echo 2
+        ;;
+    --verify | --insecure-skip-tls-verify)
+        echo 1
+        ;;
+    # https://github.com/helm/helm/blob/master/cmd/helm/flags.go#L63
+    -o | --output | --post-renderer)
+        echo 2
+        ;;
+    # Lint flags
+    --strict | --with-subcharts)
+        echo 1
+        ;;
+    # Install Flags
+    --create-namespace | --dry-run | --no-hooks | --replace | --wait | --devel | \
+        --dependency-update | --disable-openapi-validation | --atomic | --skip-crds | \
+        --render-subchart-notes)
+        echo 1
+        ;;
+    --timeout | --description)
+        echo 2
+        ;;
+    -g | --generate-name)
+        log_error " Unable to proceed repeatable configuration with a generated name"
+        return 2
+        ;;
+    --name-template)
+        log_error " name-template flag is not supported"
+        return 2
+        ;;
+    # Template Flags
+    -s | --show-only | --output-dir | --api-versions | --release-name)
+        echo 2
+        ;;
+    --validate | --include-crds | --is-upgrade)
+        echo 1
+        ;;
+    # Upgrade Flags
+    --history-max)
+        # Already existing
+        # --timeout | --description
+        echo 2
+        ;;
+    -i | --install | --recreate-pods | --force | --reset-values | \
+        --reuse-values | --cleanup-on-fail)
+        # Already existing
+        # --create-namespace | --devel | --dry-run | --no-hooks |
+        # --disable-openapi-validation | --skip-crds |
+        # --wait | --atomic | --render-subchart-notes
+        echo 1
+        ;;
+    *)
+        echo 0
+        ;;
+    esac
+}

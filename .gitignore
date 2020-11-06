@@ -4,3 +4,4 @@
 /tests/coverage/
 /node_modules/
 /repository/
+/.bin/

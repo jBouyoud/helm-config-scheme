@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    ns/test.yaml: 'true'

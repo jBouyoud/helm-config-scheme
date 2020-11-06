@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    ns/CHART-NAME.yaml: 'true'
