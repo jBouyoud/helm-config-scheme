@@ -31,6 +31,10 @@ repository_create_scheme() {
     printf '' >"$(_repository_scheme_file "${scheme_name}")"
 }
 
+repository_delete_scheme() {
+    rm -f "$(_repository_scheme_file "${1}")"
+}
+
 repository_scheme_append_file_uri() {
     scheme_name="${1}"
     file_uri="${2}"
