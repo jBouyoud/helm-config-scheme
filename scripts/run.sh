@@ -14,6 +14,12 @@ HELM_BIN="${HELM_BIN:-helm}"
 # shellcheck source=scripts/lib/is_help.sh
 . "${SCRIPT_DIR}/lib/is_help.sh"
 
+# shellcheck source=scripts/lib/file_uri_substitution.sh
+. "${SCRIPT_DIR}/lib/file_uri_substitution.sh"
+
+# shellcheck source=scripts/lib/repository.sh
+. "${SCRIPT_DIR}/lib/repository.sh"
+
 _trap_hook() {
     true
 }
