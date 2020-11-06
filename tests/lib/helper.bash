@@ -38,10 +38,6 @@ setup() {
 
     # Use a temporary config-repository reseted after every suite
     export HELM_CONFIG_SCHEME_REPOSITORY="${TEST_TEMP_DIR}/config-repository"
-    export HELM_CONFIG_SCHEME_TMP_DIR="${TEST_TEMP_DIR}/config-tmp"
-
-    mkdir "${TEST_TEMP_DIR}/chart"
-    mkdir "${HELM_CONFIG_SCHEME_TMP_DIR}"
 
     # shellcheck disable=SC2034
     XDG_DATA_HOME="${HOME}"
