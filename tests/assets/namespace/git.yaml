@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    ns/git.yaml: 'true'

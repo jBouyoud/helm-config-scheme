@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    default/chart.yaml: 'true'

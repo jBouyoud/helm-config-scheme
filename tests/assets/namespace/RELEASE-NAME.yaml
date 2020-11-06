@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    ns/RELEASE-NAME.yaml: 'true'

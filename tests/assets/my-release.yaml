@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    default/my-release.yaml: 'true'

@@ -20,6 +20,9 @@ HELM_BIN="${HELM_BIN:-helm}"
 # shellcheck source=scripts/lib/repository.sh
 . "${SCRIPT_DIR}/lib/repository.sh"
 
+# shellcheck source=scripts/lib/file.sh
+. "${SCRIPT_DIR}/lib/file.sh"
+
 _trap_hook() {
     true
 }
@@ -48,6 +51,20 @@ Configuration scheme usage with : 'config://<scheme-name>'
 EOF
 }
 
+_parent_process_command() {
+    if [ "$(uname)" = "Darwin" ]; then
+        ps -p "${PPID}" -o command=
+    elif [ "$(uname)" = "Linux" ]; then
+        if command -v apk >/dev/null; then
+            # alpine based
+            # shellcheck disable=SC2009
+            ps -o pid,args= | grep -E "^\s+${PPID}" | awk '!($1="")'
+        else
+            ps -p "${PPID}" -o command=
+        fi
+    fi
+}
+
 while true; do
     case "${1:-}" in
     add | edit | list | remove | view)
@@ -63,8 +80,20 @@ while true; do
         break
         ;;
     downloader)
-        log_error "Error: Not yet implemented."
-        exit 2
+        # command certFile keyFile caFile full-URL
+        if [ $# -le 4 ]; then
+            log_error "[downloader] invalid usage, please refer to https://helm.sh/docs/topics/plugins/#downloader-plugins"
+            exit 1
+        fi
+        # shellcheck source=scripts/commands/downloader.sh
+        . "${SCRIPT_DIR}/commands/downloader.sh"
+
+        # retrieve original helm command line
+        HELM_COMMAND="$(_parent_process_command)"
+
+        # It's always the 5th parameter
+        downloader "${5}" "${HELM_COMMAND}"
+        break
         ;;
     --help | -h | help)
         usage

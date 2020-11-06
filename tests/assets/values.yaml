@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+  annotations:
+    default/values.yaml: 'true'

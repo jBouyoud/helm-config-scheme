@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    default/CHART-NAME.yaml: 'true'
