@@ -12,8 +12,16 @@ _repository_scheme_file() {
     echo "${CONFIG_REPOSITORY}/${1}"
 }
 
+repository_list_scheme() {
+    ls -1 "${CONFIG_REPOSITORY}"
+}
+
 repository_scheme_exists() {
     test -f "$(_repository_scheme_file "${1}")"
+}
+
+repository_view_scheme() {
+    cat "$(_repository_scheme_file "${1}")"
 }
 
 repository_create_scheme() {
