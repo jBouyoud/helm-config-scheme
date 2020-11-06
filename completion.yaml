@@ -1,0 +1,28 @@
+name: config-scheme
+flags:
+  - help
+  - h
+  - quiet
+  - q
+commands:
+  - name: help
+  - name: add
+    validArgs:
+      - name
+      - values.yaml
+  - name: list
+    validArgs:
+      - name
+  - name: view
+    validArgs:
+      - name
+  - name: edit
+    validArgs:
+      - name
+    commands:
+      - append
+      - insert-at
+      - replace
+  - name: remove
+    validArgs:
+      - name

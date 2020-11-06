@@ -1,0 +1,20 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.cmd]
+end_of_line = crlf
+
+[*.{sh,bash,bats}]
+indent_style = space
+indent_size = 4
+max_line_length = 80
+trim_trailing_whitespace = true
+
+[*.sh]
+shell_variant = posix
+
+[*.{bash,bats}]
+shell_variant = bash
