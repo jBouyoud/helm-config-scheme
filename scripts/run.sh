@@ -2,11 +2,17 @@
 
 set -eu
 
-# Output debug infos
-QUIET="${HELM_CONFIG_SCHEME_QUIET:-false}"
+# Path to current directory
+SCRIPT_DIR="$(dirname "$0")"
 
 # Make sure HELM_BIN is set (normally by the helm command)
 HELM_BIN="${HELM_BIN:-helm}"
+
+# shellcheck source=scripts/lib/log.sh
+. "${SCRIPT_DIR}/lib/log.sh"
+
+# shellcheck source=scripts/lib/is_help.sh
+. "${SCRIPT_DIR}/lib/is_help.sh"
 
 _trap_hook() {
     true
@@ -39,11 +45,19 @@ EOF
 while true; do
     case "${1:-}" in
     add | edit | list | remove | view)
-        echo "Error: Not yet implemented."
-        exit 2
+        # shellcheck disable=SC1090
+        . "${SCRIPT_DIR}/commands/${1}.sh"
+
+        if is_help "${2:-}"; then
+            "${1}_usage"
+            exit 0
+        fi
+
+        "${@}"
+        break
         ;;
     downloader)
-        echo "Error: Not yet implemented."
+        log_error "Error: Not yet implemented."
         exit 2
         ;;
     --help | -h | help)
