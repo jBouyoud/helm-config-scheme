@@ -1,0 +1,24 @@
+branches:
+  - '+([0-9])?(.{+([0-9]),x}).x'
+  - 'main'
+
+plugins:
+  - '@semantic-release/commit-analyzer'
+  - '@semantic-release/release-notes-generator'
+  - '@semantic-release/changelog'
+  - '@semantic-release/npm'
+  - - '@semantic-release/exec'
+    - prepareCmd: |
+        sed -i -E "s#^version:.*#version: \${nextRelease.version}#" plugin.yaml
+      publishCmd: |
+        tar --transform 's,^,helm-config-scheme/,' --exclude=.* --exclude=examples --exclude=tests --exclude=helm-config-scheme.tar.gz -zcvf helm-config-scheme.tar.gz *
+  - - '@semantic-release/git'
+    - message: 'release: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
+      assets:
+        - 'CHANGELOG.md'
+        - 'package.json'
+        - 'package-lock.json'
+        - 'plugin.yaml'
+  - - '@semantic-release/github'
+    - assets:
+        - path: 'helm-config-scheme.tar.gz'
