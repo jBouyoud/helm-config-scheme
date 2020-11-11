@@ -11,9 +11,18 @@ plugins:
     - prepareCmd: |
         sed -i -E "s#^version:.*#version: ${nextRelease.version}#" plugin.yaml
       publishCmd: |
-        tar --transform 's,^,helm-config-scheme/,' --exclude=.* --exclude=examples --exclude=tests --exclude=helm-config-scheme.tar.gz -zcvf helm-config-scheme.tar.gz *
+        tar --transform 's,^,helm-config-scheme/,' -zcvf helm-config-scheme.tar.gz \
+          scripts \
+          completion.yaml \
+          LICENSE \
+          plugin.yaml \
+          README.md \
+          USAGE.md
   - - '@semantic-release/git'
-    - message: 'release: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
+    - message: |
+        release: ${nextRelease.version} [skip ci]
+
+        ${nextRelease.notes}
       assets:
         - 'CHANGELOG.md'
         - 'package.json'
