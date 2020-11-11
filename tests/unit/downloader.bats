@@ -115,8 +115,8 @@ YAML
     create_config_scheme test
     helm config-scheme edit test append \
         "git+https://github.com/jBouyoud/helm-config-scheme@{{chart}}.yaml?ref=master" \
-        "git+https://github.com/jBouyoud/helm-config-scheme@tests/assets/git.yaml?ref=first-release" \
-        "git+https://github.com/jBouyoud/helm-config-scheme@tests/assets/{{namespace}}/git.yaml?ref=first-release"
+        "git+https://github.com/jBouyoud/helm-config-scheme@tests/assets/git.yaml?ref=main" \
+        "git+https://github.com/jBouyoud/helm-config-scheme@tests/assets/{{namespace}}/git.yaml?ref=main"
 
     run helm config-scheme downloader unused unused unused config://test -n namespace 2>&1
     assert_success
