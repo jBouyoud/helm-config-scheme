@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/jBouyoud/helm-config-scheme/compare/v1.0.0...v1.0.1) (2020-11-11)
+
+
+### Bug Fixes
+
+* too huge plugin archive ([59ee2f8](https://github.com/jBouyoud/helm-config-scheme/commit/59ee2f8ca47f95f6774ddfd273f28160a6426230))
+
 # 1.0.0 (2020-11-11)
 
 

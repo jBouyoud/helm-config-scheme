@@ -99,5 +99,5 @@
     "@semantic-release/npm": "7.0.6",
     "@semantic-release/release-notes-generator": "9.0.1"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
