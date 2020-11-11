@@ -9,7 +9,7 @@ plugins:
   - '@semantic-release/npm'
   - - '@semantic-release/exec'
     - prepareCmd: |
-        sed -i -E "s#^version:.*#version: \${nextRelease.version}#" plugin.yaml
+        sed -i -E "s#^version:.*#version: ${nextRelease.version}#" plugin.yaml
       publishCmd: |
         tar --transform 's,^,helm-config-scheme/,' --exclude=.* --exclude=examples --exclude=tests --exclude=helm-config-scheme.tar.gz -zcvf helm-config-scheme.tar.gz *
   - - '@semantic-release/git'
@@ -17,7 +17,7 @@ plugins:
       assets:
         - 'CHANGELOG.md'
         - 'package.json'
-        - 'package-lock.json'
+        - 'yarn.lock'
         - 'plugin.yaml'
   - - '@semantic-release/github'
     - assets:
