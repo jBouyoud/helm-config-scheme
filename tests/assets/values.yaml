@@ -2,3 +2,7 @@ ingress:
   enabled: true
   annotations:
     default/values.yaml: 'true'
+  hosts:
+    - host: chart-example.local
+      paths:
+        - /
