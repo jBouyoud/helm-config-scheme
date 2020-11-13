@@ -101,10 +101,7 @@ helm_plugin_install() {
         if ! env APPDATA="${HELM_CACHE}/home/" HOME="${HELM_CACHE}/home/" helm plugin list | grep -q "${1}"; then
             case "${1}" in
             git)
-                # See: https://github.com/aslafy-z/helm-git/pull/120
-                #URL="https://github.com/aslafy-z/helm-git"
-                URL="https://github.com/jkroepke/helm-git"
-                VERSION="patch-1"
+                URL="https://github.com/aslafy-z/helm-git"
                 ;;
             esac
 
