@@ -55,10 +55,9 @@ _parent_process_command() {
     if [ "$(uname)" = "Darwin" ]; then
         ps -p "${PPID}" -o command=
     elif [ "$(uname)" = "Linux" ]; then
-        if command -v apk >/dev/null; then
-            # alpine based
-            # shellcheck disable=SC2009
-            ps -o pid,args= | grep -E "^\s+${PPID}" | awk '!($1="")'
+        if [ -f /proc/${PPID}/cmdline ]; then
+            xargs -0 </proc/${PPID}/cmdline
+            echo
         else
             ps -p "${PPID}" -o command=
         fi

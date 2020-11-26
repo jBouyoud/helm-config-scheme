@@ -10,6 +10,9 @@ load '../lib/assert-downloader'
     if is_windows; then
         skip
     fi
+    if is_coverage; then
+        skip
+    fi
 
     create_chart
     create_config_scheme test
@@ -37,22 +40,24 @@ YAML
     if is_windows; then
         skip
     fi
+    if is_coverage; then
+        skip
+    fi
 
     create_chart
     create_config_scheme test
 
     run helm template another-release "${TEST_TEMP_DIR}/chart" -f config://test -n other-namespace 2>&1
     assert_success
-    assert-downloader-output-base
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/rand-assets/values.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/values.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/chart.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/another-release.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/test.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/other-namespace/values.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/other-namespace/chart.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/other-namespace/another-release.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/other-namespace/test.yaml"
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/rand-assets/values.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/values.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/chart.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/another-release.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/test.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/other-namespace/values.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/other-namespace/chart.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/other-namespace/another-release.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/other-namespace/test.yaml' skipped."
 
     assert_output --partial "kind: Ingress"
     assert_output --partial "$(cat <<-YAML
@@ -66,6 +71,9 @@ YAML
 
 @test "template: full args without release name arg" {
     if is_windows; then
+        skip
+    fi
+    if is_coverage; then
         skip
     fi
 
@@ -95,6 +103,9 @@ YAML
     if is_windows; then
         skip
     fi
+    if is_coverage; then
+        skip
+    fi
 
     create_chart
     create_config_scheme test
@@ -120,6 +131,9 @@ YAML
 
 @test "template: full args, flags between" {
     if is_windows; then
+        skip
+    fi
+    if is_coverage; then
         skip
     fi
 
@@ -149,6 +163,9 @@ YAML
     if is_windows; then
         skip
     fi
+    if is_coverage; then
+        skip
+    fi
 
     create_chart
     create_config_scheme test
@@ -174,6 +191,9 @@ YAML
 
 @test "template: packaged chart" {
     if is_windows; then
+        skip
+    fi
+    if is_coverage; then
         skip
     fi
 
@@ -204,6 +224,9 @@ YAML
     if is_windows; then
         skip
     fi
+    if is_coverage; then
+        skip
+    fi
 
     create_chart
     create_config_scheme test
@@ -230,6 +253,9 @@ YAML
 
 @test "template: ." {
     if is_windows; then
+        skip
+    fi
+    if is_coverage; then
         skip
     fi
 
@@ -259,6 +285,9 @@ YAML
 
 @test "template: . without release" {
     if is_windows; then
+        skip
+    fi
+    if is_coverage; then
         skip
     fi
 

@@ -14,13 +14,27 @@ _file_get_protocol() {
         echo "custom"
         ;;
     *)
-        echo "local"
+        if [ -d "$1" ]; then
+            echo "local_dir"
+        elif [ -f "$1" ]; then
+            echo "local_file"
+        else
+            echo "local_regex"
+        fi
         ;;
     esac
 }
 
-_file_get() {
-    file_type=$(_file_get_protocol "${1}")
+_file_tmpfile() {
+    mktemp "${1}/tmp.XXXXXXXXXX"
+}
 
-    _file_"${file_type}"_get "$@"
+file_get() {
+    file_type="$(_file_get_protocol "${1}")"
+    tmpdir="${2}"
+    res="$(_file_tmpfile "${tmpdir}")"
+    touch "${res}"
+    echo "${res}"
+
+    _file_"${file_type}"_get "${1}" "${tmpdir}" "${res}"
 }

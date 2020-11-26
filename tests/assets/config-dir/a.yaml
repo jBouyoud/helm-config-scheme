@@ -1,0 +1,3 @@
+ingress:
+  annotations:
+    config-dir/a.yaml: 'true'

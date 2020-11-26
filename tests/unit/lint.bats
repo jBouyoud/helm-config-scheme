@@ -10,6 +10,9 @@ load '../lib/assert-downloader'
     if is_windows; then
         skip
     fi
+    if is_coverage; then
+        skip
+    fi
 
     create_chart
     create_config_scheme test
