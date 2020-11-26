@@ -11,6 +11,12 @@ log_info() {
     fi
 }
 
+log_info_line() {
+    if [ "${QUIET}" = "false" ]; then
+        printf "[config-scheme]%s" "$@" >&2
+    fi
+}
+
 log_error() {
     echo
     printf "[config-scheme]%s\n" "$@"

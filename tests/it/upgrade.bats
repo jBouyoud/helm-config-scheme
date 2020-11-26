@@ -16,16 +16,16 @@ load '../lib/assert-downloader'
 
     run helm upgrade -i --create-namespace --wait "${RELEASE}" "${TEST_TEMP_DIR}/chart" -f config://test -n namespace 2>&1
     assert_success
-    assert-downloader-output-base
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/rand-assets/values.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/values.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/chart.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/${RELEASE}.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/test.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/namespace/values.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/namespace/chart.yaml"
-    assert_output --partial "[config-scheme][downloader] Ignored config source : ${TEST_TEMP_DIR}/assets/namespace/${RELEASE}.yaml"
-    assert_output --partial "[config-scheme][downloader] Loaded config source : ${TEST_TEMP_DIR}/assets/namespace/test.yaml"
+    assert_file_not_exist "${HELM_CONFIG_SCHEME_TMP_DIR}"
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/rand-assets/values.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/values.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/chart.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/${RELEASE}.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/test.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/namespace/values.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/namespace/chart.yaml' done. 1 file(s) loaded."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/namespace/${RELEASE}.yaml' skipped."
+    assert_output --partial "[config-scheme][downloader] Loading values for '${TEST_TEMP_DIR}/assets/namespace/test.yaml' done. 1 file(s) loaded."
     assert_output --partial 'STATUS: deployed'
 
     run helm ls -n namespace

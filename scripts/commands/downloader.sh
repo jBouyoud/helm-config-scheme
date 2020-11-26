@@ -47,35 +47,40 @@ downloader() {
     # build parameters
     export_subst_args "${parent_process_cmd_line}"
 
-    idx=0
+    value_files="${TMP_DIR}/result"
     repository_view_scheme "${scheme_name}" | while read -r file_template; do
-        log_info "[downloader] Looking for '${file_template}'..."
+        eval "file=\"${file_template}\""
 
-        eval "file=${file_template}"
         # shellcheck disable=SC2154
-        file_content="$( (_file_get "${file}" || printf ''))"
+        log_info_line "[downloader] Loading values for '${file}' "
 
-        if [ -z "${file_content}" ]; then
-            log_info "[downloader] Ignored config source : ${file}"
+        # shellcheck disable=SC2154
+        value_files_list="$(file_get "${file}" "${TMP_DIR}")"
+
+        cat "${value_files_list}" >>"${value_files}"
+
+        count="$(wc <"${value_files_list}" -l | awk '{print $1}')"
+        if [ "${count}" -eq 0 ]; then
+            printf "skipped.\n" >&2
         else
-            log_info "[downloader] Loaded config source : ${file}"
-            printf '%s\n' "${file_content}" >"${TMP_DIR}/file-${idx}"
-            idx=$((idx + 1))
+            printf "done. %s file(s) loaded.\n" "${count}" >&2
         fi
+        rm -f "${value_files_list}"
     done
 
-    if [ "$(find "${TMP_DIR}" -type f | wc -l)" -le 1 ]; then
-        cat "${TMP_DIR}/file-0" 2>/dev/null || printf ''
+    count="$(wc <"${value_files}" -l | awk '{print $1}')"
+    if [ "${count}" -eq 0 ]; then
+        printf ''
     else
         yq_select=""
-        for value_file in "${TMP_DIR}"/file-*; do
+        while read -r value_file; do
             if [ "${yq_select}" != "" ]; then
                 yq_select="${yq_select} *"
             fi
             yq_select="${yq_select} select(filename == \"${value_file}\")"
-        done
+        done <"${value_files}"
 
         # shellcheck disable=SC2046
-        _yq eval-all -M "explode(.) |${yq_select}" "${TMP_DIR}"/file-*
+        _yq eval-all -M "explode(.) |${yq_select}" $(cat "${value_files}")
     fi
 }
