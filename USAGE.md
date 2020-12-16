@@ -33,6 +33,21 @@ A config scheme consist of a list of files uri to be use in your Helm commands
 
 Files uri in scheme supports some variable substitution.
 
+### File uri
+
+Files uri can be :
+
+- Any download scheme like `http://`, `git://`, `secrets://`, built-in in helm or provided by an external helm plugin such as:
+  - https://github.com/aslafy-z/helm-git
+  - https://github.com/jkroepke/helm-secrets/
+- A local file (`./my-values.yaml`); absolute or relative path.
+- A local directory (`./config-dir`) absolute or relative path.
+  The plugin will search all `(.yaml|.yml)` file in this folder not recursively sorted by their names.
+- Else assume that is a regex (`config-dir/(a|c)\.yaml`).
+  The plugin will find all files in the (`dirname` of regex)
+  And pass your regex to `grep` command to filter these files.
+  After that, the plugin will take all files sorted by their names
+
 ### File uri variable substitution
 
 List of available substitution
@@ -42,7 +57,7 @@ List of available substitution
 | `{{namespace}}` | Helm command namespace                               | unknown       |
 | `{{release}}`   | Helm release name                                    | RELEASE-NAME  |
 | `{{chart}}`     | Helm chart name                                      | CHART_NAME    |
-| `{{env}}`       | Replaced by the environment variable value for `env` | unknown       |
+| `{{env}}`       | Replaced by the environment variable value for `env` | N/A           |
 
 #### Caveats
 
@@ -53,23 +68,120 @@ This plugin doesn't support variable substitution with those helm flags :
 
 ### Create a config scheme
 
-TODO
+```
+helm config-scheme add NAME FILE-URI...
+```
 
-### Edit an existing config scheme
+You can use this operation to create/add a new configuration scheme.
 
-TODO
+`helm config-scheme add basic ./my-values.yaml ./another-values.yaml`
+
+You can now use this scheme in any helm operation with :
+
+`helm install my-chart -f config://basic`
 
 ### List all existing config schemes
 
-TODO
+```
+helm config-scheme list
+```
 
-### Remove an existing config scheme
+List all available configuration schemes
 
-TODO
+`helm config-scheme list`
+
+will output something like
+
+```
+basic       2 file-uri(s)
+complex  	6 file-uri(s)
+```
+
+The output list for each config his name, and the current number of file-uri registered for this scheme.
+
+You can use `view` sub-commands to get details about one scheme.
 
 ### View an existing config scheme
 
-TODO
+`helm config-scheme view NAME`
+
+This command will show you details about an existing configuration scheme
+
+`helm config-scheme view basic`
+
+will output :
+
+```
+1 my-values.yaml
+2 another-values.yaml
+```
+
+The output lists all configured Files uri for the given scheme prefixed by his order number.
+
+### Remove an existing config scheme
+
+`helm config-scheme remove NAME`
+
+This command can be used to remove an existing configuration scheme
+
+`helm config-scheme remove basic`
+
+The `basic` configuration scheme is no more usable.
+
+### Edit an existing config scheme
+
+```
+helm config-scheme edit NAME SUB-COMMAND SUB-COMMAND-ARGS...
+
+Edit an existing NAME configuration scheme
+
+Available Commands:
+  -  append FILE-URI...
+
+     Add new FILE-URIs to the end of NAME configuration scheme
+
+  -  insert-at INDEX FILE-URI...
+
+     Add new FILE-URIs at INDEX of NAME configuration scheme
+
+  -  replace INDEX FILE-URI
+
+     Replace an existing file_uri at INDEX by FILE-URI of NAME configuration scheme
+```
+
+The command is used to modify an existing configuration scheme in order to add/remove/replace some file uris.
+
+#### edit : append
+
+`helm config-scheme edit NAME append FILE-URI...`
+
+This sub-command is used to add file uris to an existing scheme at the end of the list
+
+`helm config-scheme edit basic append ./my-release-values.yaml`
+
+Now the `basic` configuration scheme contains a new file uri `./my-release-values.yaml` at the last position.
+
+#### edit : insert-at
+
+`helm config-scheme edit NAME insert-at INDEX FILE-URI...`
+
+This sub-command is used to add file uris to an existing scheme at the specified index of the list
+
+`helm config-scheme edit basic insert-at 1 ./my-release-values.yaml`
+
+Now the `basic` configuration scheme contains a new file uri `./my-release-values.yaml` at the index 1.
+All file uri present before the command at index [1;+] are now at index [2;+]
+
+#### edit : replace
+
+`helm config-scheme edit NAME replace INDEX FILE-URI`
+
+This sub-command is edit ONE file uri on an existing scheme at the specified index of the list
+
+`helm config-scheme edit basic replace 0 ./my-release-values.yaml`
+
+Now the `basic` configuration scheme contains the same number of new file uris
+But the file uri at index `0` is now `./my-release-values.yaml`.
 
 ## Config scheme usage
 
