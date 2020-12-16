@@ -5,4 +5,4 @@ ingress:
   hosts:
     - host: chart-example.local
       paths:
-        - /
+        - path: /
