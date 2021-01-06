@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/jBouyoud/helm-config-scheme/compare/v1.0.1...v1.1.0) (2021-01-06)
+
+
+### Features
+
+* bump yq dependency ([ebc0d4e](https://github.com/jBouyoud/helm-config-scheme/commit/ebc0d4e9f031ca1e202b3cf00889fd2c6c742afa))
+
 ## [1.0.1](https://github.com/jBouyoud/helm-config-scheme/compare/v1.0.0...v1.0.1) (2020-11-11)
 
 
