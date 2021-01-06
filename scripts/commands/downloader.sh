@@ -67,6 +67,15 @@ downloader() {
     if [ "$(find "${TMP_DIR}" -type f | wc -l)" -le 1 ]; then
         cat "${TMP_DIR}/file-0" 2>/dev/null || printf ''
     else
-        _yq merge -x "${TMP_DIR}"/file-*
+        yq_select=""
+        for value_file in "${TMP_DIR}"/file-*; do
+            if [ "${yq_select}" != "" ]; then
+                yq_select="${yq_select} *"
+            fi
+            yq_select="${yq_select} select(filename == \"${value_file}\")"
+        done
+
+        # shellcheck disable=SC2046
+        _yq eval-all -M "explode(.) |${yq_select}" "${TMP_DIR}"/file-*
     fi
 }
