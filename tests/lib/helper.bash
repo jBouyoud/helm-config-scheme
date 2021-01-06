@@ -7,6 +7,10 @@ is_windows() {
     ! [[ "$(uname)" == "Darwin" || "$(uname)" == "Linux" ]]
 }
 
+is_coverage() {
+    [ -n "${BASHCOV_COMMAND_NAME+x}" ]
+}
+
 _shasum() {
     # MacOS have shasum, others have sha1sum
     if command -v shasum >/dev/null; then

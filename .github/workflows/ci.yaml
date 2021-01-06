@@ -12,8 +12,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+
       - name: Run the sh-checker
         uses: luizm/action-sh-checker@v0.1.9
         env:
@@ -25,71 +24,119 @@ jobs:
           sh_checker_checkbashisms_enable: true
 
   unit-tests:
-    needs: [lint]
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest] # [dash, zsh, bash]
+        os: [ubuntu-latest]
         container: [~]
+        shell: [dash]
         include:
+          - os: windows-latest
+            shell: bash
+          - os: macos-latest
+            shell: bash 3.2
           - os: ubuntu-latest
-            container: alpine # ash
+            container: alpine
+            shell: ash
           - os: ubuntu-latest
-            container: centos:8 # bash
+            container: centos:7
+            shell: bash 4.2
+          - os: ubuntu-latest
+            container: alpine
+            shell: zsh
     steps:
-      - name: Install dependencies
-        if: "!contains(matrix.os, 'windows-latest')"
+      - name: Install git
+        if: 'matrix && matrix.container'
         run: |-
           if command -v apk > /dev/null; then
-            apk add --no-cache bash git
+            apk add --no-cache bash git gnupg
+          elif command -v apt-get > /dev/null; then
+            apt-get update -qqy
+            apt-get install -qqy git-core unzip gnupg
           elif command -v yum > /dev/null; then
+            if [ "$(rpm -E %{rhel})" == "7" ]; then
+              yum-config-manager --add-repo='https://download.copr.fedorainfracloud.org/results/jkroepke/git/epel-$releasever-x86_64/'
+              rpm --import https://download.copr.fedorainfracloud.org/results/jkroepke/git/pubkey.gpg
+            fi
             yum install -y git-core unzip
           fi
 
+      - name: Install zsh
+        if: "matrix && contains(matrix.shell, 'zsh')"
+        run: apk add zsh && ln -sf "$(command -v zsh)" /bin/sh
+
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           submodules: true
 
       - name: Setup Helm
         uses: azure/setup-helm@v1
 
-      - name: Install bats (*nix)
-        if: "!contains(matrix.os, 'windows-latest')"
+      - name: Print Environment
         run: |-
-          mkdir -p "$GITHUB_WORKSPACE/bin"
-          echo "$GITHUB_WORKSPACE/bin/" >> $GITHUB_PATH
-
-          tests/bats/core/install.sh "$GITHUB_WORKSPACE"
-
-      - name: Print Environment (*nix)
-        if: "!contains(matrix.os, 'windows-latest')"
-        run: |-
-          echo "Shell: $(readlink /bin/sh || readlink /var/select/sh)"
-          helm version
-          bats -v
-
-      - name: Print Environment (windows)
-        if: "contains(matrix.os, 'windows-latest')"
-        run: |-
-          helm version
+          bash -c 'echo "Shell: $(readlink /bin/sh || readlink /var/select/sh || echo unknown)"'
           bash tests/bats/core/bin/bats -v
-
-      - name: helm plugin install
-        run: helm plugin install .
 
       - name: tests/unit (*nix)
         if: "!contains(matrix.os, 'windows-latest')"
         run: |
-          bats --tap -r tests/unit
+          tests/bats/core/bin/bats --tap -r tests/unit
 
       - name: tests/unit (windows)
         if: "contains(matrix.os, 'windows-latest')"
         run: |
           $env:W_TEMP=$env:TEMP; bash tests/bats/core/bin/bats --tap -r tests/unit
+
+  coverage:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      - name: Setup Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install bashcov
+        run: |
+          gem install bashcov simplecov-cobertura
+          sudo chmod 777 /usr/local/bin/
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v1
+
+      - name: helm plugin install
+        run: |
+          bashcov -- scripts/install.sh
+          mv coverage/coverage.xml coverage/coverage-install.xml
+        env:
+          HELM_PLUGIN_DIR: .
+          BASHCOV_COMMAND_NAME: helm-config-scheme install
+
+      - name: Test if dependencies are installed
+        run: .bin/yq -V
+
+      - name: Prepare bashcov
+        run: grep -rl 'env sh' scripts | xargs sed -i 's/env sh/env bash/'
+
+      - name: bashcov bats --tap -r tests/unit
+        run: bashcov -- tests/bats/core/bin/bats --tap -r tests/unit
+        env:
+          BASHCOV_COMMAND_NAME: helm-config-scheme plugin
+          BATSLIB_TEMP_PRESERVE: '0'
+          BATSLIB_TEMP_PRESERVE_ON_FAILURE: '0'
+
+      - uses: codecov/codecov-action@v1
+        with:
+          directory: coverage
+          fail_ci_if_error: true
 
   integration-tests:
     needs: [unit-tests]
@@ -103,26 +150,12 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           submodules: true
 
       - name: Setup Helm
         uses: azure/setup-helm@v1
 
-      - name: Install dependencies
-        run: |-
-          mkdir -p "$GITHUB_WORKSPACE/bin"
-          echo "$GITHUB_WORKSPACE/bin/" >> $GITHUB_PATH
-
-          tests/bats/core/install.sh "$GITHUB_WORKSPACE"
-
-      - name: Print Environment
-        run: |-
-          echo "Shell: $(readlink /bin/sh || readlink /var/select/sh)"
-          helm version
-          bats -v
-
       - name: helm plugin install
         run: helm plugin install .
 
-      - run: bats --tap -r tests/it
+      - run: tests/bats/core/bin/bats --tap -r tests/it
