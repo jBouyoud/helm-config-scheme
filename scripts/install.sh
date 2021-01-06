@@ -14,7 +14,7 @@ fi
 YQ_PATH="${HELM_PLUGIN_DIR}/.bin/"
 mkdir -p "${YQ_PATH}"
 
-YQ_DEFAULT_VERSION="3.4.1"
+YQ_DEFAULT_VERSION="4.2.1"
 YQ_VERSION="${YQ_VERSION:-"${YQ_DEFAULT_VERSION}"}"
 
 YQ_PLATFORM="windows"
@@ -34,18 +34,19 @@ if [ "${YQ_PLATFORM}" = "windows" ]; then
     YQ_SUFFIX=".exe"
 fi
 
-YQ_URL="${YQ_URL:-"https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM}_${YQ_ARCH}${YQ_SUFFIX}"}"
+YQ_URL="${YQ_URL:-"https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_${YQ_PLATFORM}_${YQ_ARCH}${YQ_SUFFIX}"}"
 
+# Retrieve sha256 with : `cat checksums | awk '{print $1; print $19;}'`
 # shellcheck disable=SC2034
-YQ_SHA_darwin_amd64="5553d4640550debed5213a5eb6016d3a3485ca8a36e9c71996610280755d5a50"
+YQ_SHA_darwin_amd64="9d84f133675164694039fc9072a322e3ec0c96444a68be38082ebc85ec11d55a"
 # shellcheck disable=SC2034
-YQ_SHA_linux_368="ba57700f41cf21bf019af0eec47cf9884f70c25bc5abb0f3347bd42f19609739"
+YQ_SHA_linux_368="2b0afeff49ee9b0c44c652cf925f04fc8f9c4d237b8a6ad89173b239ca44a17b"
 # shellcheck disable=SC2034
-YQ_SHA_linux_amd64="adbc6dd027607718ac74ceac15f74115ac1f3caef68babfb73246929d4ffb23c"
+YQ_SHA_linux_amd64="51018dedf4cb510c7cf6c42663327605e7e0c315747fe584fbf83cc10747449c"
 # shellcheck disable=SC2034
-YQ_SHA_windows_368="6292e14b0c199f2bd33e18a8bfe67f100084837163e1e2bc4934bcd7990a5087"
+YQ_SHA_windows_368="1f264f96934ce8bcf45de018e8f6094eb9a9c560a8032308b2085483a2a0a7fd"
 # shellcheck disable=SC2034
-YQ_SHA_windows_amd64="987d31d3a9b75f9cb0f202173aab033d333d2406ba2caa7dba9d16a5204c2167"
+YQ_SHA_windows_amd64="d17497653f8f22f22c4cfd9de2277f8a66e9a29932061f5c8a45468c38399ca9"
 
 YQ_SHA_DEFAULT_NAME="YQ_SHA_${YQ_PLATFORM}_${YQ_ARCH}"
 eval YQ_SHA_DEFAULT="\$${YQ_SHA_DEFAULT_NAME}"
