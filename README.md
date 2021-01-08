@@ -3,7 +3,7 @@
 [![CI](https://github.com/jBouyoud/helm-config-scheme/workflows/ci/badge.svg)](https://github.com/jBouyoud/helm-config-scheme/)
 [![License](https://img.shields.io/github/license/jBouyoud/helm-config-scheme.svg)](https://github.com/jBouyoud/helm-config-scheme/blob/master/LICENSE)
 [![Current Release](https://img.shields.io/github/release/jBouyoud/helm-config-scheme.svg)](https://github.com/jBouyoud/helm-config-scheme/releases/latest)
-[![Production Ready](https://img.shields.io/badge/production-not%20ready-red.svg)](https://github.com/jBouyoud/helm-config-scheme/releases/latest)
+[![Production Ready](https://img.shields.io/badge/production-ready-green.svg)](https://github.com/jBouyoud/helm-config-scheme/releases/latest)
 [![GitHub issues](https://img.shields.io/github/issues/jBouyoud/helm-config-scheme.svg)](https://github.com/jBouyoud/helm-config-scheme/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/jBouyoud/helm-config-scheme.svg)](https://github.com/jBouyoud/helm-config-scheme/pulls)
 
