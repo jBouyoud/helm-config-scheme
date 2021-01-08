@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/jBouyoud/helm-config-scheme/compare/v1.1.0...v1.2.0) (2021-01-08)
+
+
+### Features
+
+* add directory support ([0b23472](https://github.com/jBouyoud/helm-config-scheme/commit/0b2347289733c820e2aa307d41414f065ca5792d))
+
 # [1.1.0](https://github.com/jBouyoud/helm-config-scheme/compare/v1.0.1...v1.1.0) (2021-01-06)
 
 
