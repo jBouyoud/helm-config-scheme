@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v2.1.4
         with:
           node-version: 14
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         id: cache
         with:
           path: node_modules
