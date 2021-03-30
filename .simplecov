@@ -7,6 +7,7 @@ SimpleCov.start do
   add_filter "/.git/"
   add_filter "/.bin/"
   add_filter "/.github/"
+  add_filter "/.husky/"
   add_filter "/repository/"
   add_filter "/tests/"
 end

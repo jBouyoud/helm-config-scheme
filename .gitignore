@@ -6,3 +6,5 @@
 /repository/
 /.bin/
 helm-config-scheme.tar.gz
+/coverage/
+*.log

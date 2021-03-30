@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
+          node-version: 16
       - uses: actions/cache@v2.1.4
         id: cache
         with:
@@ -27,15 +27,16 @@ jobs:
             ${{ runner.os }}-node-
       - name: 'install dependencies'
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --pure-lockfile
+        run: yarn install --frozen-lockfile
         env:
-          HUSKY_SKIP_INSTALL: true
+          HUSKY: 0
       - name: 'validation'
         run: yarn ci
       - name: 'release'
         if: "contains(github.ref, 'main')"
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          HUSKY: 0
         run: yarn -s semantic-release
       - name: 'release indicator'
         id: release-indicator
