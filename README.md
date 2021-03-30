@@ -1,6 +1,7 @@
 # helm-config-scheme
 
 [![CI](https://github.com/jBouyoud/helm-config-scheme/workflows/ci/badge.svg)](https://github.com/jBouyoud/helm-config-scheme/)
+[![codecov](https://codecov.io/gh/jBouyoud/helm-config-scheme/branch/main/graph/badge.svg?token=HZLCMPG5EC)](https://codecov.io/gh/jBouyoud/helm-config-scheme)
 [![License](https://img.shields.io/github/license/jBouyoud/helm-config-scheme.svg)](https://github.com/jBouyoud/helm-config-scheme/blob/master/LICENSE)
 [![Current Release](https://img.shields.io/github/release/jBouyoud/helm-config-scheme.svg)](https://github.com/jBouyoud/helm-config-scheme/releases/latest)
 [![Production Ready](https://img.shields.io/badge/production-ready-green.svg)](https://github.com/jBouyoud/helm-config-scheme/releases/latest)

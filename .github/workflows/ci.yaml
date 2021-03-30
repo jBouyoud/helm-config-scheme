@@ -20,7 +20,7 @@ jobs:
           SHELLCHECK_OPTS: -x
         with:
           sh_checker_comment: true
-          sh_checker_exclude: 'tests'
+          sh_checker_exclude: 'tests .husky'
           sh_checker_checkbashisms_enable: true
 
   unit-tests:
