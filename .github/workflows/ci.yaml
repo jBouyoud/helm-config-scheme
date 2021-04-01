@@ -73,7 +73,7 @@ jobs:
           submodules: true
 
       - name: Setup Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v1.1
 
       - name: Print Environment
         run: |-
@@ -110,7 +110,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v1.1
 
       - name: helm plugin install
         run: |
@@ -153,7 +153,7 @@ jobs:
           submodules: true
 
       - name: Setup Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v1.1
 
       - name: helm plugin install
         run: helm plugin install .
