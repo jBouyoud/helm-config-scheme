@@ -56,7 +56,7 @@ jobs:
           echo "::set-output name=type::${RELEASE_TYPE}"
           echo "::set-output name=notes::${RELEASE_NOTES}"
       - name: 'release indicator - comment pr'
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4.0.2
         if: "!contains(github.ref, 'main')"
         env:
           RELEASE_TYPE: ${{steps.release-indicator.outputs.type}}
