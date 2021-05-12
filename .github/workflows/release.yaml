@@ -57,14 +57,12 @@ jobs:
           echo "::set-output name=type::${RELEASE_TYPE}"
           echo "::set-output name=notes::${RELEASE_NOTES}"
       - name: 'release indicator - comment pr'
-        uses: actions/github-script@v3
-        if: "!contains(github.ref, 'main')"
+        uses: actions/github-script@v4.0.2
+        if: "!contains(github.ref, 'main') && !contains(github.ref, 'dependabot')"
         env:
           RELEASE_TYPE: ${{steps.release-indicator.outputs.type}}
           RELEASE_NOTES: ${{steps.release-indicator.outputs.notes}}
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-
           script: |
             const PR_COMMENT_TITLE = '## :rocket: Release indicator\n\n';
             const releaseType = process.env.RELEASE_TYPE;
