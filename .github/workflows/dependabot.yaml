@@ -11,6 +11,7 @@ jobs:
       - name: 'dependabot merge'
         uses: actions/github-script@v4.0.2
         with:
+          github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
             await github.issues.createComment({
               owner: context.repo.owner,
