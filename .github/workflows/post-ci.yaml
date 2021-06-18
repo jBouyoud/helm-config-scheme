@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 16
 
-      - uses: actions/cache@v2.1.4
+      - uses: actions/cache@v2.1.6
         id: cache
         with:
           path: node_modules
