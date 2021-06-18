@@ -7,7 +7,34 @@ on:
       - main
 
 jobs:
-  lint:
+  lint-commit-prettier:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16
+
+      - uses: actions/cache@v2.1.4
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 'install dependencies'
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+        env:
+          HUSKY: 0
+
+      - name: 'validation'
+        run: yarn ci
+
+  lint-sh:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -159,3 +186,15 @@ jobs:
         run: helm plugin install .
 
       - run: tests/bats/core/bin/bats --tap -r tests/it
+
+  save-pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Save PR number
+        run: echo ${{ github.event.number }} > ./pr-nb
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr-nb
+          path: pr-nb
