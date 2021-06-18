@@ -1,0 +1,134 @@
+name: post-ci
+on:
+  workflow_run:
+    workflows: ['ci']
+    types: ['completed']
+
+jobs:
+  test-job:
+    name: Test Step
+    runs-on: ubuntu-latest
+    env:
+      TEST: ${{ github }}
+    steps:
+      - run: env
+
+  release-indicator:
+    runs-on: ubuntu-latest
+    if: >
+      ${{ github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          name: pr-nb
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16
+
+      - uses: actions/cache@v2.1.4
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 'install dependencies'
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+        env:
+          HUSKY: 0
+
+      - name: 'release indicator'
+        id: release-indicator
+        env:
+          GITHUB_HEAD_REF: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          GITHUB_REF="${GITHUB_HEAD_REF}"
+          yarn -s semantic-release --dry-run --no-ci -b "${GITHUB_HEAD_REF}" | tee semantic.log
+
+          RELEASE_TYPE="$(sed -En 's/.*Analysis of [0-9]+ commits complete: ([^\s]+) release.*/\1/p' semantic.log)"
+          RELEASE_NOTES="$(sed -En '1h;1!H;${;g;s/.*Release note for version [^\s]+\s*:(.*)/\1/p;}' semantic.log)"
+
+          RELEASE_NOTES="${RELEASE_NOTES//'%'/'%25'}"
+          RELEASE_NOTES="${RELEASE_NOTES//$'\n'/'%0A'}"
+          RELEASE_NOTES="${RELEASE_NOTES//$'\r'/'%0D'}"
+
+          echo "::set-output name=type::${RELEASE_TYPE}"
+          echo "::set-output name=notes::${RELEASE_NOTES}"
+
+      - name: 'release indicator - comment pr'
+        uses: actions/github-script@v4.0.2
+        env:
+          RELEASE_TYPE: ${{steps.release-indicator.outputs.type}}
+          RELEASE_NOTES: ${{steps.release-indicator.outputs.notes}}
+        with:
+          script: |
+            const PR_COMMENT_TITLE = '## :rocket: Release indicator\n\n';
+            const releaseType = process.env.RELEASE_TYPE;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = Number(fs.readFileSync('./pr-nb'));
+
+            const comments = await github.issues.listComments({
+              owner,
+              repo,
+              issue_number,
+            });
+            const releaseIndicatorComment = comments.data.find(comment =>
+              comment.body.startsWith(PR_COMMENT_TITLE),
+            );
+
+            function getPRComment() {
+              if (!releaseType) {
+                return `Recommended bump for this PR : **\`NO\`** release
+
+            There are no relevant changes, so no new version is released.`;
+              }
+              return `Recommended bump for this PR : **\`${releaseType.toUpperCase()}\`** release
+
+            ${process.env.RELEASE_NOTES}`;
+            }
+            const body = PR_COMMENT_TITLE + getPRComment("${{steps.release-indicator.outputs.type}}");
+
+            if (releaseIndicatorComment) {
+              await github.issues.updateComment({
+                owner,
+                repo,
+                body,
+                comment_id: releaseIndicatorComment.id,
+              });
+            } else {
+              await github.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+  auto-merge-dependabot-pr:
+    runs-on: ubuntu-latest
+    if: >
+      ${{ github.actor == 'dependabot[bot]' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: pr-nb
+
+      - name: '@dependabot merge'
+        uses: actions/github-script@v4.0.2
+        with:
+          script: |
+            const fs = require('fs');
+            const issue_number = Number(fs.readFileSync('./pr-nb'));
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body: '@dependabot merge'
+            })
