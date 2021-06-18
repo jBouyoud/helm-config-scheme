@@ -129,7 +129,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
     steps:
       - name: 'Download artifact'
-        uses: actions/github-script@v3.1.0
+        uses: actions/github-script@v4.0.2
         with:
           script: |
             var artifacts = await github.actions.listWorkflowRunArtifacts({
@@ -152,6 +152,7 @@ jobs:
       - name: '@dependabot merge'
         uses: actions/github-script@v4.0.2
         with:
+          github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
             const fs = require('fs');
             const issue_number = Number(fs.readFileSync('./pr-nb'));
