@@ -287,3 +287,41 @@ YAML
     refute_output --partial 'config-dir/b.yaml:'
     refute_output --partial 'config-dir/c.yaml:'
 }
+
+@test "downloader: scheme with env and env vars is not defined" {
+    if is_windows; then
+        skip
+    fi
+    if is_coverage; then
+        skip
+    fi
+    create_config_scheme test
+    helm config-scheme edit test append \
+        "${TEST_TEMP_DIR}/assets/{{my_env}}/values.yaml"
+
+    run helm config-scheme downloader unused unused unused config://test -n namespace 2>&1
+    assert_success
+    assert-downloader-output "namespace" "CHART-NAME" "RELEASE-NAME" "test"
+    assert_output --partial "$(cat <<-YAML
+ingress:
+  enabled: true
+  annotations:
+    default/values.yaml: 'true'
+    default/CHART-NAME.yaml: 'true'
+    default/RELEASE-NAME.yaml: 'true'
+    default/test.yaml: 'true'
+    ns/values.yaml: 'true'
+    ns/CHART-NAME.yaml: 'true'
+    ns/RELEASE-NAME.yaml: 'true'
+    ns/test.yaml: 'true'
+YAML
+)"
+
+    refute_output --partial 'default/my-chart.yaml:'
+    refute_output --partial 'default/my-release.yaml:'
+    refute_output --partial 'ns/my-chart.yaml:'
+    refute_output --partial 'ns/my-release.yaml:'
+    refute_output --partial 'config-dir/a.yaml:'
+    refute_output --partial 'config-dir/b.yaml:'
+    refute_output --partial 'config-dir/c.yaml:'
+}

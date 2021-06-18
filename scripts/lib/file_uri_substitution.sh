@@ -34,7 +34,7 @@ file_uri_subst() {
         exit 1
     fi
 
-    echo "${file_uri}" | sed 's/{{/${/g' | sed 's/}}/}/g'
+    echo "${file_uri}" | sed 's/{{/${/g' | sed 's/}}/:-}/g'
 }
 
 unset_subst_args() {

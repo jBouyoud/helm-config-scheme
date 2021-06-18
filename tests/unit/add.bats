@@ -81,7 +81,7 @@ load '../lib/asserts-config-repository'
     assert_success
     assert_output --partial "[config-scheme][registry] Creating 'scheme1'"
     assert_output --partial "[config-scheme][registry] Add file uri '{{namespace}}.yaml' to scheme 'scheme1'"
-    assert_config_repository_scheme "scheme1" "\${namespace}.yaml"
+    assert_config_repository_scheme "scheme1" "\${namespace:-}.yaml"
 }
 
 @test "add scheme uris substitution: create scheme" {
@@ -98,5 +98,5 @@ load '../lib/asserts-config-repository'
     assert_output --partial "[config-scheme][registry] Add file uri 'git+https://github.com/user/repo/{{chart}}.yaml?ref=master' to scheme 'scheme1'"
     assert_output --partial "[config-scheme][registry] Add file uri 'secrets://local/{{release}}.yaml' to scheme 'scheme1'"
     assert_output --partial "[config-scheme][registry] Add file uri 'local/{{my_env}}.yaml' to scheme 'scheme1'"
-    assert_config_repository_scheme "scheme1" $'local/file.yaml\nhttps://my.repo.com/config/${namespace}/file.yaml\ngit+https://github.com/user/repo/${chart}.yaml?ref=master\nsecrets://local/${release}.yaml\nlocal/${my_env}.yaml'
+    assert_config_repository_scheme "scheme1" $'local/file.yaml\nhttps://my.repo.com/config/${namespace:-}/file.yaml\ngit+https://github.com/user/repo/${chart:-}.yaml?ref=master\nsecrets://local/${release:-}.yaml\nlocal/${my_env:-}.yaml'
 }
