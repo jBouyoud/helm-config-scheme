@@ -52,12 +52,12 @@ Files uri can be :
 
 List of available substitution
 
-| variable        | substituted by                                       | default value |
-| --------------- | ---------------------------------------------------- | ------------- |
-| `{{namespace}}` | Helm command namespace                               | unknown       |
-| `{{release}}`   | Helm release name                                    | RELEASE-NAME  |
-| `{{chart}}`     | Helm chart name                                      | CHART_NAME    |
-| `{{env}}`       | Replaced by the environment variable value for `env` | N/A           |
+| variable        | substituted by                                         | default value |
+| --------------- | ------------------------------------------------------ | ------------- |
+| `{{namespace}}` | Helm command namespace                                 | unknown       |
+| `{{release}}`   | Helm release name                                      | RELEASE-NAME  |
+| `{{chart}}`     | Helm chart name                                        | CHART_NAME    |
+| `{{my_env}}`    | Replaced by the environment variable value of `my_env` | N/A           |
 
 #### Caveats
 
@@ -94,7 +94,7 @@ will output something like
 
 ```
 basic       2 file-uri(s)
-complex  	6 file-uri(s)
+complex     6 file-uri(s)
 ```
 
 The output list for each config his name, and the current number of file-uri registered for this scheme.

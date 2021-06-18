@@ -9,12 +9,12 @@ FILE-URI specify values in a YAML file or a URL
 
 File uri support some substitutions:
 
-| variable      | substituted by                                       | default value |
-| ------------- | ---------------------------------------------------- | ------------- |
-| {{namespace}} | Helm command namespace                               | unknown       |
-| {{release}}   | Helm release name                                    | RELEASE-NAME  |
-| {{chart}}     | Helm chart name                                      | CHART_NAME    |
-| {{env}}       | Replaced by the environment variable value for "env" | unknown       |
+| variable         | substituted by                                          | default value |
+| ---------------- | ------------------------------------------------------- | ------------- |
+| {{namespace}}    | Helm command namespace                                  | unknown       |
+| {{release}}      | Helm release name                                       | RELEASE-NAME  |
+| {{chart}}        | Helm chart name                                         | CHART_NAME    |
+| {{my_env}}       | Replaced by the environment variable value for "my_env" | unknown       |
 
 Example:
 - local/file.yaml
