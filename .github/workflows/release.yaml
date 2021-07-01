@@ -16,9 +16,10 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           node-version: 16
+          cache: yarn
 
       - uses: actions/cache@v2.1.6
         id: cache
