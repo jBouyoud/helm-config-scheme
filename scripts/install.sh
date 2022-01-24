@@ -11,6 +11,8 @@ if [ "$(uname)" = "Darwin" ]; then
     fi
 fi
 
+# Try something different
+
 YQ_PATH="${HELM_PLUGIN_DIR}/.bin/"
 mkdir -p "${YQ_PATH}"
 
