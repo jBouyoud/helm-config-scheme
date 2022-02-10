@@ -283,6 +283,38 @@ YAML
 )"
 }
 
+@test "template: . reversed args" {
+    if is_windows; then
+        skip
+    fi
+    if is_coverage; then
+        skip
+    fi
+
+    create_chart
+    create_config_scheme test
+
+    cd "${TEST_TEMP_DIR}/chart";
+    run helm template --kube-token bob --values=config://test --wait-for-jobs --namespace=namespace my-release . 2>&1
+    cd -
+    assert_success
+    assert-downloader-output "namespace" "chart" "my-release" "test"
+
+    assert_output --partial "kind: Ingress"
+    assert_output --partial "$(cat <<-YAML
+  annotations:
+    default/chart.yaml: "true"
+    default/my-release.yaml: "true"
+    default/test.yaml: "true"
+    default/values.yaml: "true"
+    ns/chart.yaml: "true"
+    ns/my-release.yaml: "true"
+    ns/test.yaml: "true"
+    ns/values.yaml: "true"
+YAML
+)"
+}
+
 @test "template: . without release" {
     if is_windows; then
         skip

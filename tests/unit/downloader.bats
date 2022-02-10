@@ -255,7 +255,7 @@ YAML
         "git+https://github.com/jBouyoud/helm-config-scheme@tests/assets/git.yaml?ref=main" \
         "git+https://github.com/jBouyoud/helm-config-scheme@tests/assets/{{namespace}}/git.yaml?ref=main"
 
-    run helm config-scheme downloader unused unused unused config://test -n namespace 2>&1
+    run helm config-scheme downloader unused unused unused config://test --namespace=namespace 2>&1
     assert_success
     assert-downloader-output "namespace" "CHART-NAME" "RELEASE-NAME" "test"
     assert_output --partial "[config-scheme][downloader] Loading values for 'git+https://github.com/jBouyoud/helm-config-scheme@CHART-NAME.yaml?ref=master' skipped."
