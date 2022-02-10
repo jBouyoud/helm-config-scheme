@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.0...v1.3.1) (2022-02-10)
+
+
+### Bug Fixes
+
+* args parsing issues with pattern like '--x=y' ([205d68b](https://github.com/jBouyoud/helm-config-scheme/commit/205d68b0fb1463acc319e6255fc31fcf0bcf0c4b))
+
 # [1.3.0](https://github.com/jBouyoud/helm-config-scheme/compare/v1.2.0...v1.3.0) (2021-06-29)
 
 
