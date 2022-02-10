@@ -56,7 +56,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            var artifacts = await github.actions.listWorkflowRunArtifacts({
+            var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: ${{ github.event.workflow_run.id }},
@@ -64,7 +64,7 @@ jobs:
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "pr-nb"
             })[0];
-            var download = await github.actions.downloadArtifact({
+            var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: matchArtifact.id,
@@ -89,7 +89,7 @@ jobs:
             const repo = context.repo.repo;
             const issue_number = Number(fs.readFileSync('./pr-nb'));
 
-            const comments = await github.issues.listComments({
+            const comments = await github.rest.issues.listComments({
               owner,
               repo,
               issue_number,
@@ -111,14 +111,14 @@ jobs:
             const body = PR_COMMENT_TITLE + getPRComment("${{steps.release-indicator.outputs.type}}");
 
             if (releaseIndicatorComment) {
-              await github.issues.updateComment({
+              await github.rest.issues.updateComment({
                 owner,
                 repo,
                 body,
                 comment_id: releaseIndicatorComment.id,
               });
             } else {
-              await github.issues.createComment({ owner, repo, issue_number, body });
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
             }
 
   auto-merge-dependabot-pr:
@@ -132,7 +132,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            var artifacts = await github.actions.listWorkflowRunArtifacts({
+            var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
                run_id: ${{github.event.workflow_run.id }},
@@ -140,7 +140,7 @@ jobs:
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "pr-nb"
             })[0];
-            var download = await github.actions.downloadArtifact({
+            var download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: matchArtifact.id,
@@ -156,7 +156,7 @@ jobs:
           script: |
             const fs = require('fs');
             const issue_number = Number(fs.readFileSync('./pr-nb'));
-            await github.issues.createComment({
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number,
