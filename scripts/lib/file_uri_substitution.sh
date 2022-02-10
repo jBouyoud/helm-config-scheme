@@ -112,15 +112,19 @@ _get_subst_args_value() {
 
 _is_helm_flag() {
     case "${1:-}" in
+    -g | --generate-name)
+        log_error " Unable to proceed repeatable configuration with a generated name"
+        return 2
+        ;;
+    --name-template)
+        log_error " name-template flag is not supported"
+        return 2
+        ;;
     # Global Flags :: Key, Value
     --repository-config | --repository-cache | --registry-config | -n | --namespace | \
         --kubeconfig | --kube-token | --kube-context | --kube-as-user | --kube-as-group | \
         --kube-apiserver)
         echo 2
-        ;;
-    # Global Flags :: Key
-    -h | --help | --debug)
-        echo 1
         ;;
     # Value Options Flags https://github.com/helm/helm/blob/master/cmd/helm/flags.go#L41
     -f | --values | --set | --set-string | --set-file)
@@ -130,40 +134,16 @@ _is_helm_flag() {
     --version | --keyring | --repo | --username | --password | --cert-file | --key-file | --ca-file)
         echo 2
         ;;
-    --verify | --insecure-skip-tls-verify)
-        echo 1
-        ;;
     # https://github.com/helm/helm/blob/master/cmd/helm/flags.go#L63
     -o | --output | --post-renderer)
         echo 2
         ;;
-    # Lint flags
-    --strict | --with-subcharts)
-        echo 1
-        ;;
-    # Install Flags
-    --create-namespace | --dry-run | --no-hooks | --replace | --wait | --devel | \
-        --dependency-update | --disable-openapi-validation | --atomic | --skip-crds | \
-        --render-subchart-notes)
-        echo 1
-        ;;
     --timeout | --description)
         echo 2
-        ;;
-    -g | --generate-name)
-        log_error " Unable to proceed repeatable configuration with a generated name"
-        return 2
-        ;;
-    --name-template)
-        log_error " name-template flag is not supported"
-        return 2
         ;;
     # Template Flags
     -s | --show-only | --output-dir | --api-versions | --release-name)
         echo 2
-        ;;
-    --validate | --include-crds | --is-upgrade)
-        echo 1
         ;;
     # Upgrade Flags
     --history-max)
@@ -171,12 +151,7 @@ _is_helm_flag() {
         # --timeout | --description
         echo 2
         ;;
-    -i | --install | --recreate-pods | --force | --reset-values | \
-        --reuse-values | --cleanup-on-fail)
-        # Already existing
-        # --create-namespace | --devel | --dry-run | --no-hooks |
-        # --disable-openapi-validation | --skip-crds |
-        # --wait | --atomic | --render-subchart-notes
+    -*)
         echo 1
         ;;
     *)
