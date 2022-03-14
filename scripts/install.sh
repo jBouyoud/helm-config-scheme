@@ -28,6 +28,9 @@ YQ_ARCH="386"
 if [ "$(uname -m)" = "x86_64" ]; then
     YQ_ARCH="amd64"
 fi
+if [ "$(uname -m)" = "arm64" ]; then
+    YQ_ARCH="arm64"
+fi
 
 YQ_SUFFIX=""
 if [ "${YQ_PLATFORM}" = "windows" ]; then
@@ -39,6 +42,8 @@ YQ_URL="${YQ_URL:-"https://github.com/mikefarah/yq/releases/download/v${YQ_VERSI
 # Retrieve sha256 with : `cat checksums | awk '{print $1; print $19;}'`
 # shellcheck disable=SC2034
 YQ_SHA_darwin_amd64="8ef8160d69a5bb24e101ca4fcbad2e997b575a6dbb2f6e88f8d393cafeba3b40"
+# shellcheck disable=SC2034
+YQ_SHA_darwin_arm64="54b9f62d839506b6140c05e9b3c3a1ae614e624adcfb52c73869dcd2affdbec1"
 # shellcheck disable=SC2034
 YQ_SHA_linux_368="faf5d5537f1ac5f48bea57c1f5296d4a1faee5bd946a2e5f01348c2aa45cdf85"
 # shellcheck disable=SC2034
