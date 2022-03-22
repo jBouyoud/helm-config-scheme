@@ -16,20 +16,12 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - uses: actions/setup-node@v2.5.1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-
-      - uses: actions/cache@v2.1.7
-        id: cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: yarn
+          node-version-file: .nvmrc
 
       - name: 'install dependencies'
-        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
         env:
           HUSKY: 0
