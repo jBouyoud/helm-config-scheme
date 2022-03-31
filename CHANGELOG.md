@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.1...v1.3.2) (2022-03-31)
+
+
+### Bug Fixes
+
+* allow darwin arm processor installation ([e8b1d35](https://github.com/jBouyoud/helm-config-scheme/commit/e8b1d35c6d8298227965a08aeecccba7988cd46a))
+
 ## [1.3.1](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.0...v1.3.1) (2022-02-10)
 
 
