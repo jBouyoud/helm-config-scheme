@@ -8,3 +8,7 @@
 helm-config-scheme.tar.gz
 /coverage/
 *.log
+
+# yarn v2+
+.yarn/
+.pnp.*

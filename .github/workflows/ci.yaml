@@ -11,15 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - name: ⚙️ Enable Corepack
+        shell: bash
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
         with:
-          cache: yarn
           node-version-file: .nvmrc
+          cache: yarn
 
       - name: 'install dependencies'
-        run: yarn install --frozen-lockfile
+        run: yarn --immutable --inline-builds
         env:
           HUSKY: 0
 
@@ -30,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Run the sh-checker
-        uses: luizm/action-sh-checker@v0.1.13
+        uses: luizm/action-sh-checker@v0.7.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SHELLCHECK_OPTS: -x
@@ -51,7 +55,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         container: [~]
-        shell: [dash]
+        shell: [dash, bash]
         include:
           - os: windows-latest
             shell: bash
@@ -60,9 +64,6 @@ jobs:
           - os: ubuntu-latest
             container: alpine
             shell: ash
-          - os: ubuntu-latest
-            container: centos:7
-            shell: bash 4.2
           - os: ubuntu-latest
             container: alpine
             shell: zsh
@@ -83,16 +84,20 @@ jobs:
             yum install -y git-core unzip
           fi
 
+          git config --global --add safe.directory '*'
+
       - name: Install zsh
         if: "matrix && contains(matrix.shell, 'zsh')"
         run: apk add zsh && ln -sf "$(command -v zsh)" /bin/sh
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Setup Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.17.0' # TODO Fix installation issue with helm 3.18.0
 
       - name: Print Environment
         run: |-
@@ -114,7 +119,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Setup Ruby 2.6
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.6
 
@@ -123,13 +128,13 @@ jobs:
           gem install bashcov:'< 2' simplecov-cobertura:'< 2'
           sudo chmod 777 /usr/local/bin/
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
 
       - name: Setup Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
 
       - name: helm plugin install
         run: |
@@ -152,9 +157,10 @@ jobs:
           BATSLIB_TEMP_PRESERVE: '0'
           BATSLIB_TEMP_PRESERVE_ON_FAILURE: '0'
 
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v5
         with:
           directory: coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
 
   integration-tests:
@@ -162,17 +168,17 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - uses: helm/kind-action@v1.2.0
+      - uses: helm/kind-action@v1.5.0
       - run: |
           kubectl cluster-info
           kubectl api-resources
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Setup Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
 
       - name: helm plugin install
         run: helm plugin install .
@@ -186,7 +192,7 @@ jobs:
       - name: Save PR number
         run: echo ${{ github.event.number }} > ./pr-nb
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: pr-nb
           path: pr-nb

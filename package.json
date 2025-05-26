@@ -11,7 +11,7 @@
     "lint:commit": "commitlint --from=$( git rev-list --tags --max-count=1 )",
     "lint:prettier": "yarn prettier -l '**/*.{md,yaml}'",
     "lint:prettier:fix": "yarn prettier --write '**/*.{md,yaml}'",
-    "postinstall": "husky install"
+    "prepare": "husky"
   },
   "commitlint": {
     "extends": [
@@ -75,19 +75,20 @@
     "arrowParens": "avoid"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.2.3",
-    "@commitlint/config-conventional": "16.2.1",
-    "@semantic-release/changelog": "6.0.1",
-    "@semantic-release/commit-analyzer": "9.0.2",
-    "@semantic-release/exec": "6.0.3",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/commit-analyzer": "13.0.1",
+    "@semantic-release/exec": "7.1.0",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "8.0.4",
-    "@semantic-release/npm": "9.0.1",
-    "@semantic-release/release-notes-generator": "10.0.3",
-    "husky": "7.0.4",
-    "lint-staged": "12.3.7",
-    "prettier": "2.6.2",
-    "semantic-release": "19.0.2"
+    "@semantic-release/github": "11.0.3",
+    "@semantic-release/npm": "12.0.1",
+    "@semantic-release/release-notes-generator": "14.0.3",
+    "husky": "9.1.7",
+    "lint-staged": "16.0.0",
+    "prettier": "3.5.3",
+    "semantic-release": "24.2.5"
   },
-  "version": "1.3.2"
+  "version": "1.3.2",
+  "packageManager": "yarn@4.9.1"
 }
