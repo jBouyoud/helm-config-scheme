@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.2...v1.3.3) (2025-05-26)
+
+
+### Bug Fixes
+
+* move deprecated command to platformCommand section ([448fd81](https://github.com/jBouyoud/helm-config-scheme/commit/448fd81795812d322ce4450068c5da34f0191c44))
+
 ## [1.3.2](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.1...v1.3.2) (2022-03-31)
 
 
