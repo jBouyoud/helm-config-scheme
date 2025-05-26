@@ -10,19 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Disabling credentials persistence in order to be able to commit as a random user (eg. for release)
           persist-credentials: false
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - name: ⚙️ Enable Corepack
+        shell: bash
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
         with:
-          cache: yarn
           node-version-file: .nvmrc
+          cache: yarn
 
       - name: 'install dependencies'
-        run: yarn install --frozen-lockfile
+        run: yarn --immutable --inline-builds
         env:
           HUSKY: 0
 
