@@ -36,7 +36,7 @@ jobs:
           GITHUB_HEAD_REF: ${{ github.event.workflow_run.head_branch }}
         run: |
           GITHUB_REF="${GITHUB_HEAD_REF}"
-          yarn -s semantic-release --dry-run --no-ci -b "${GITHUB_HEAD_REF}" | tee semantic.log
+          yarn semantic-release --dry-run --no-ci -b "${GITHUB_HEAD_REF}" | tee semantic.log
 
           RELEASE_TYPE="$(sed -En 's/.*Analysis of [0-9]+ commits complete: ([^\s]+) release.*/\1/p' semantic.log)"
           RELEASE_NOTES="$(sed -En '1h;1!H;${;g;s/.*Release note for version [^\s]+\s*:(.*)/\1/p;}' semantic.log)"
