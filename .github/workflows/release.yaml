@@ -30,7 +30,7 @@ jobs:
         env:
           HUSKY: 0
 
-      - run: yarn -s semantic-release
+      - run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           HUSKY: 0
