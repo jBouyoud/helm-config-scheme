@@ -96,8 +96,6 @@ jobs:
 
       - name: Setup Helm
         uses: azure/setup-helm@v3
-        with:
-          version: '3.17.0' # TODO Fix installation issue with helm 3.18.0
 
       - name: Print Environment
         run: |-
