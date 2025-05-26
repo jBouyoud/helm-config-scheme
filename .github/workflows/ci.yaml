@@ -168,7 +168,7 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - uses: helm/kind-action@v1.5.0
+      - uses: helm/kind-action@v1.12.0
       - run: |
           kubectl cluster-info
           kubectl api-resources
