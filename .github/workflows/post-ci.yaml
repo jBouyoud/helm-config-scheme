@@ -49,7 +49,7 @@ jobs:
           echo "::set-output name=notes::${RELEASE_NOTES}"
 
       - name: 'Download artifact'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -72,7 +72,7 @@ jobs:
       - run: unzip pr.zip
 
       - name: 'release indicator - comment pr'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         env:
           RELEASE_TYPE: ${{steps.release-indicator.outputs.type}}
           RELEASE_NOTES: ${{steps.release-indicator.outputs.notes}}
@@ -125,7 +125,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
     steps:
       - name: 'Download artifact'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -146,7 +146,7 @@ jobs:
             fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
       - run: unzip pr.zip
       - name: '@dependabot merge'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.RELEASE_TOKEN }}
           script: |
