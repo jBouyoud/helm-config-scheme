@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Disabling credentials persistence in order to be able to commit as a random user (eg. for release)
           persist-credentials: false
