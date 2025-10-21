@@ -825,7 +825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/npm@npm:13.1.1":
+"@semantic-release/npm@npm:13.1.1, @semantic-release/npm@npm:^13.1.1":
   version: 13.1.1
   resolution: "@semantic-release/npm@npm:13.1.1"
   dependencies:
@@ -847,29 +847,6 @@ __metadata:
   peerDependencies:
     semantic-release: ">=20.1.0"
   checksum: 10c0/4b74d46d4ee7ec0e4487b23fdb1a1dad7974a75e7dd8cccbab0238c4e513367927860069ea22678c9e4373418cf0279f26bbb668c4d4308ac68d92f1e14c1ebf
-  languageName: node
-  linkType: hard
-
-"@semantic-release/npm@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "@semantic-release/npm@npm:13.0.0"
-  dependencies:
-    "@semantic-release/error": "npm:^4.0.0"
-    aggregate-error: "npm:^5.0.0"
-    execa: "npm:^9.0.0"
-    fs-extra: "npm:^11.0.0"
-    lodash-es: "npm:^4.17.21"
-    nerf-dart: "npm:^1.0.0"
-    normalize-url: "npm:^8.0.0"
-    npm: "npm:^11.6.2"
-    rc: "npm:^1.2.8"
-    read-pkg: "npm:^9.0.0"
-    registry-auth-token: "npm:^5.0.0"
-    semver: "npm:^7.1.2"
-    tempy: "npm:^3.0.0"
-  peerDependencies:
-    semantic-release: ">=20.1.0"
-  checksum: 10c0/134e2dd625c8c11727970a4836946606ef8c73d9a3402795bf379e51efde5d994f446ddb73b4065365a4340b89752c2e6fc611f3aa985e7e3c82ab4bd80af1f3
   languageName: node
   linkType: hard
 
@@ -2298,7 +2275,7 @@ __metadata:
     husky: "npm:9.1.7"
     lint-staged: "npm:16.2.5"
     prettier: "npm:3.6.2"
-    semantic-release: "npm:25.0.0"
+    semantic-release: "npm:25.0.1"
   languageName: unknown
   linkType: soft
 
@@ -4335,14 +4312,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:25.0.0":
-  version: 25.0.0
-  resolution: "semantic-release@npm:25.0.0"
+"semantic-release@npm:25.0.1":
+  version: 25.0.1
+  resolution: "semantic-release@npm:25.0.1"
   dependencies:
     "@semantic-release/commit-analyzer": "npm:^13.0.1"
     "@semantic-release/error": "npm:^4.0.0"
     "@semantic-release/github": "npm:^12.0.0"
-    "@semantic-release/npm": "npm:^13.0.0"
+    "@semantic-release/npm": "npm:^13.1.1"
     "@semantic-release/release-notes-generator": "npm:^14.1.0"
     aggregate-error: "npm:^5.0.0"
     cosmiconfig: "npm:^9.0.0"
@@ -4370,7 +4347,7 @@ __metadata:
     yargs: "npm:^18.0.0"
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: 10c0/740c51f126b596231afc275d548043b0c7afd2ac38629e7b65b5d03e159af6bedf90f5005f4b21138c686823e38ce6216fffd0dfd13097147ba4ea43e9a39619
+  checksum: 10c0/3578a7bcb422d33b0632e72158cc2a7e4f54867ccfbf8216e14d5d1c3beb10e6832a3bc7c0fee032552973675491349ed09d2111beafffe93a7d18e0ab64ac45
   languageName: node
   linkType: hard
 
