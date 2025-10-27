@@ -190,7 +190,7 @@ jobs:
       - name: Save PR number
         run: echo ${{ github.event.number }} > ./pr-nb
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: pr-nb
           path: pr-nb
