@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.3...v2.0.0) (2026-03-04)
+
+
+### Features
+
+* add Helm v4 support with split cli/getter sub-plugins ([45b38b4](https://github.com/jBouyoud/helm-config-scheme/commit/45b38b47cfff93f75260fe35200dc64f9adeae39))
+
+
+### BREAKING CHANGES
+
+* Helm v4 requires installing separate cli and getter packages
+instead of a single plugin.
+
 ## [1.3.3](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.2...v1.3.3) (2025-05-26)
 
 
