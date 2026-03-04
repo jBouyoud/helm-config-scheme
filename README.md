@@ -46,49 +46,47 @@ See: [USAGE.md](USAGE.md) for more information
 
 ## Installation
 
-### Using Helm plugin manager
+### Helm 4
+
+Helm 4 requires separate packages for each plugin capability. Install both the CLI and getter plugins:
 
 ```bash
-# Install a specific version (recommend)
-helm plugin install https://github.com/jBouyoud/helm-config-scheme --version v3.3.0
+helm plugin install https://github.com/jBouyoud/helm-config-scheme/releases/download/v1.4.0/config-scheme-1.4.0.tgz --verify=false
+helm plugin install https://github.com/jBouyoud/helm-config-scheme/releases/download/v1.4.0/config-scheme-getter-1.4.0.tgz --verify=false
+```
+
+The `config-scheme-getter` plugin is required if you use the `config://` protocol in your Helm value files (e.g. `helm upgrade name . -f config-scheme://my-scheme`).
+
+### Helm 3
+
+#### Using Helm plugin manager
+
+```bash
+# Install a specific version (recommended)
+helm plugin install https://github.com/jBouyoud/helm-config-scheme --version v1.4.0
 
 # Install latest unstable version from main branch
 helm plugin install https://github.com/jBouyoud/helm-config-scheme
 ```
 
-Find the latest version here: https://github.com/jBouyoud/helm-config-scheme/releases
-
-### Manual installation
-
-#### Latest version
+#### Manual installation
 
 ```bash
-# Windows (inside cmd, needs to be verified)
-curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/latest/download/helm-config-scheme.tar.gz | tar -C "%APPDATA%\helm\plugins" -xzf-
-
 # MacOS
 curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/latest/download/helm-config-scheme.tar.gz | tar -C "$HOME/Library/helm/plugins" -xzf-
 
 # Linux
 curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/latest/download/helm-config-scheme.tar.gz | tar -C "$HOME/.local/share/helm/plugins" -xzf-
+
+# Windows (inside cmd)
+curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/latest/download/helm-config-scheme.tar.gz | tar -C "%APPDATA%\helm\plugins" -xzf-
 ```
 
-#### Specific version
-
-```bash
-# Windows (inside cmd, needs to be verified)
-curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/download/v1.0.0/helm-secrets.tar.gz | tar -C "%APPDATA%\helm\plugins" -xzf-
-
-# MacOS
-curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/download/v1.0.0/helm-secrets.tar.gz | tar -C "$HOME/Library/helm/plugins" -xzf-
-
-# Linux
-curl -LsSf https://github.com/jBouyoud/helm-config-scheme/releases/download/v1.0.0/helm-secrets.tar.gz | tar -C "$HOME/.local/share/helm/plugins" -xzf-
-```
+Find the latest version here: https://github.com/jBouyoud/helm-config-scheme/releases
 
 ### Helm 2
 
-Helm 2 is not support.
+Helm 2 is not supported.
 Please consider upgrading to Helm 3+.
 
 ## Moving parts of project

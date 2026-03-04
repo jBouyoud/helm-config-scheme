@@ -10,10 +10,17 @@ load '../bats/extensions/bats-file/load'
     assert_success
     assert_output --partial 'config-scheme'
 
-    if is_windows; then
-        assert_file_exist ".bin/yq.exe"
+    _helm_major=$(helm version --template '{{.Version}}' 2>/dev/null | sed 's/v\([0-9]*\).*/\1/')
+    if [ "${_helm_major}" -ge 4 ] 2>/dev/null; then
+        _yq_dir="${GIT_ROOT}/plugins/helm-config-scheme-cli/.bin"
     else
-        assert_file_exist ".bin/yq"
+        _yq_dir=".bin"
+    fi
+
+    if is_windows; then
+        assert_file_exist "${_yq_dir}/yq.exe"
+    else
+        assert_file_exist "${_yq_dir}/yq"
     fi
 }
 

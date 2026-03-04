@@ -10,6 +10,8 @@ plugins:
   - - '@semantic-release/exec'
     - prepareCmd: |
         sed -i -E "s#^version:.*#version: ${nextRelease.version}#" plugin.yaml
+        sed -i -E "s#^version:.*#version: ${nextRelease.version}#" plugins/helm-config-scheme-cli/plugin.yaml
+        sed -i -E "s#^version:.*#version: ${nextRelease.version}#" plugins/helm-config-scheme-getter/plugin.yaml
       publishCmd: |
         tar --transform 's,^,helm-config-scheme/,' -zcvf helm-config-scheme.tar.gz \
           scripts \
@@ -18,6 +20,32 @@ plugins:
           plugin.yaml \
           README.md \
           USAGE.md
+
+        # Package v4 CLI plugin
+        cd plugins/helm-config-scheme-cli
+        rm -rf scripts
+        cp -a ../../scripts .
+        cp ../../LICENSE .
+        cp ../../README.md .
+        tar --transform 's,^,config-scheme/,' -zcvf ../../config-scheme-${nextRelease.version}.tgz \
+          scripts \
+          LICENSE \
+          plugin.yaml \
+          README.md
+        cd ../..
+
+        # Package v4 getter plugin
+        cd plugins/helm-config-scheme-getter
+        rm -rf scripts
+        cp -a ../../scripts .
+        cp ../../LICENSE .
+        cp ../../README.md .
+        tar --transform 's,^,config-scheme-getter/,' -zcvf ../../config-scheme-getter-${nextRelease.version}.tgz \
+          scripts \
+          LICENSE \
+          plugin.yaml \
+          README.md
+        cd ../..
   - - '@semantic-release/git'
     - message: |
         release: ${nextRelease.version} [skip ci]
@@ -28,6 +56,10 @@ plugins:
         - 'package.json'
         - 'yarn.lock'
         - 'plugin.yaml'
+        - 'plugins/helm-config-scheme-cli/plugin.yaml'
+        - 'plugins/helm-config-scheme-getter/plugin.yaml'
   - - '@semantic-release/github'
     - assets:
         - path: 'helm-config-scheme.tar.gz'
+        - path: 'config-scheme-${nextRelease.version}.tgz'
+        - path: 'config-scheme-getter-${nextRelease.version}.tgz'

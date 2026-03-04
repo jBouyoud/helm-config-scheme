@@ -54,8 +54,14 @@ setup() {
     # shellcheck disable=SC2034
     APPDATA="${HOME}"
 
-    # install helm plugin
-    helm plugin install "${GIT_ROOT}"
+    # install helm plugin (v3 legacy or v4 sub-plugins)
+    _helm_major=$(helm version --template '{{.Version}}' 2>/dev/null | sed 's/v\([0-9]*\).*/\1/')
+    if [ "${_helm_major}" -ge 4 ] 2>/dev/null; then
+        helm plugin install "${GIT_ROOT}/plugins/helm-config-scheme-cli" --verify=false
+        helm plugin install "${GIT_ROOT}/plugins/helm-config-scheme-getter" --verify=false
+    else
+        helm plugin install "${GIT_ROOT}"
+    fi
 
     # copy .kube from real home
     if [ -d "${REAL_HOME}/.kube" ]; then
@@ -109,7 +115,12 @@ helm_plugin_install() {
                 ;;
             esac
 
-            env APPDATA="${HELM_CACHE}/home/" HOME="${HELM_CACHE}/home/" helm plugin install "${URL}" ${VERSION:+--version ${VERSION}}
+            _verify_flag=""
+            _hm=$(helm version --template '{{.Version}}' 2>/dev/null | sed 's/v\([0-9]*\).*/\1/')
+            if [ "${_hm}" -ge 4 ] 2>/dev/null; then
+                _verify_flag="--verify=false"
+            fi
+            env APPDATA="${HELM_CACHE}/home/" HOME="${HELM_CACHE}/home/" helm plugin install "${URL}" ${VERSION:+--version ${VERSION}} ${_verify_flag}
         fi
 
         cp -r "${HELM_CACHE}/home/." "${HOME}"
