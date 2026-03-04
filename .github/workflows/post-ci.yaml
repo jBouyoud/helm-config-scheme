@@ -145,16 +145,7 @@ jobs:
             var fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
       - run: unzip pr.zip
-      - name: '@dependabot merge'
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.RELEASE_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const issue_number = Number(fs.readFileSync('./pr-nb'));
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number,
-              body: '@dependabot merge'
-            })
+      - name: 'Enable auto-merge'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: gh pr merge --auto --rebase "$(cat pr-nb)" -R "${{ github.repository }}"
