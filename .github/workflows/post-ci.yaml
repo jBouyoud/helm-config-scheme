@@ -45,8 +45,8 @@ jobs:
           RELEASE_NOTES="${RELEASE_NOTES//$'\n'/'%0A'}"
           RELEASE_NOTES="${RELEASE_NOTES//$'\r'/'%0D'}"
 
-          echo "::set-output name=type::${RELEASE_TYPE}"
-          echo "::set-output name=notes::${RELEASE_NOTES}"
+          echo "type=${RELEASE_TYPE}" >> $GITHUB_OUTPUT
+          echo "notes=${RELEASE_NOTES}" >> $GITHUB_OUTPUT
 
       - name: 'Download artifact'
         uses: actions/github-script@v8
