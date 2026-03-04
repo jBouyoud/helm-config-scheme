@@ -61,5 +61,5 @@ plugins:
   - - '@semantic-release/github'
     - assets:
         - path: 'helm-config-scheme.tar.gz'
-        - path: 'config-scheme-${nextRelease.version}.tgz'
-        - path: 'config-scheme-getter-${nextRelease.version}.tgz'
+        - path: 'config-scheme-*.tgz'
+        - path: 'config-scheme-getter-*.tgz'
