@@ -1,0 +1,49 @@
+apiVersion: v1
+type: cli/v1
+name: 'config-scheme'
+version: 1.4.0-dev
+runtime: subprocess
+config:
+  usage: config-scheme
+  shortHelp: Repeatable configuration scheme for Helm Charts
+  longHelp: |
+    This plugin provides a convenient way to manage a set of configuration scheme
+    And allow to use those defined scheme in your chart operations
+
+    Available Commands:
+      add     Create a new configuration scheme
+      edit    Edit a configuration scheme
+      list    List existing configuration scheme
+      remove  Remove a configuration scheme
+      view    View a configuration scheme
+
+    Configuration scheme usage with : 'config://<scheme-name>'
+runtimeConfig:
+  platformCommand:
+    - os: linux
+      command: '$HELM_PLUGIN_DIR/scripts/run.sh'
+    - os: darwin
+      command: '$HELM_PLUGIN_DIR/scripts/run.sh'
+    - os: windows
+      command: >-
+        cmd.exe /D /E:ON /V:ON /C !HELM_PLUGIN_DIR!\scripts\wrapper\sh.cmd !HELM_PLUGIN_DIR!\scripts\run.sh
+    - command: '$HELM_PLUGIN_DIR/scripts/run.sh'
+  platformHooks:
+    install:
+      - os: linux
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: darwin
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: windows
+        command: >-
+          cmd.exe /D /E:ON /V:ON /C !HELM_PLUGIN_DIR!\scripts\wrapper\sh.cmd !HELM_PLUGIN_DIR!\scripts\install.sh
+      - command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+    update:
+      - os: linux
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: darwin
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: windows
+        command: >-
+          cmd.exe /D /E:ON /V:ON /C !HELM_PLUGIN_DIR!\scripts\wrapper\sh.cmd !HELM_PLUGIN_DIR!\scripts\install.sh
+      - command: '$HELM_PLUGIN_DIR/scripts/install.sh'

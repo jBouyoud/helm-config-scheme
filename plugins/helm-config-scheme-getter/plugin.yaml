@@ -1,0 +1,44 @@
+apiVersion: v1
+type: getter/v1
+name: 'config-scheme-getter'
+version: 1.4.0-dev
+runtime: subprocess
+config:
+  protocols:
+    - 'config'
+runtimeConfig:
+  protocolCommands:
+    - protocols:
+        - 'config'
+      platformCommand:
+        - os: linux
+          command: 'scripts/run.sh'
+          args: ['downloader']
+        - os: darwin
+          command: 'scripts/run.sh'
+          args: ['downloader']
+        - os: windows
+          command: >-
+            cmd.exe /D /E:ON /V:ON /C scripts\wrapper\sh.cmd scripts\run.sh
+          args: ['downloader']
+        - command: 'scripts/run.sh'
+          args: ['downloader']
+  platformHooks:
+    install:
+      - os: linux
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: darwin
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: windows
+        command: >-
+          cmd.exe /D /E:ON /V:ON /C !HELM_PLUGIN_DIR!\scripts\wrapper\sh.cmd !HELM_PLUGIN_DIR!\scripts\install.sh
+      - command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+    update:
+      - os: linux
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: darwin
+        command: '$HELM_PLUGIN_DIR/scripts/install.sh'
+      - os: windows
+        command: >-
+          cmd.exe /D /E:ON /V:ON /C !HELM_PLUGIN_DIR!\scripts\wrapper\sh.cmd !HELM_PLUGIN_DIR!\scripts\install.sh
+      - command: '$HELM_PLUGIN_DIR/scripts/install.sh'
