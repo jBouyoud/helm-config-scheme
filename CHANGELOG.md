@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/jBouyoud/helm-config-scheme/compare/v2.0.0...v2.0.1) (2026-03-05)
+
+
+### Bug Fixes
+
+* disable shellcheck SC2329 for indirectly invoked trap functions ([3bf670c](https://github.com/jBouyoud/helm-config-scheme/commit/3bf670c65e4c7cf668b224980df8cd89f3aaeb45))
+
 # [2.0.0](https://github.com/jBouyoud/helm-config-scheme/compare/v1.3.3...v2.0.0) (2026-03-04)
 
 

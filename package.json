@@ -89,6 +89,6 @@
     "prettier": "3.8.1",
     "semantic-release": "25.0.2"
   },
-  "version": "2.0.0",
+  "version": "2.0.1",
   "packageManager": "yarn@4.9.1"
 }
