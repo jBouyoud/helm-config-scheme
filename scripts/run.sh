@@ -23,12 +23,12 @@ HELM_BIN="${HELM_BIN:-helm}"
 # shellcheck source=scripts/lib/file.sh
 . "${SCRIPT_DIR}/lib/file.sh"
 
-# shellcheck disable=SC2317
+# shellcheck disable=SC2317,SC2329
 _trap_hook() {
     true
 }
 
-# shellcheck disable=SC2317
+# shellcheck disable=SC2317,SC2329
 _trap() {
     _trap_hook
 }
