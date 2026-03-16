@@ -146,13 +146,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:20.4.4":
-  version: 20.4.4
-  resolution: "@commitlint/config-conventional@npm:20.4.4"
+"@commitlint/config-conventional@npm:20.5.0":
+  version: 20.5.0
+  resolution: "@commitlint/config-conventional@npm:20.5.0"
   dependencies:
-    "@commitlint/types": "npm:^20.4.4"
+    "@commitlint/types": "npm:^20.5.0"
     conventional-changelog-conventionalcommits: "npm:^9.2.0"
-  checksum: 10c0/6599259901762f944b73ffd22df9f5137f643c6f9a670218c939eacb0939e31acf5ccaef27f116acbb1a232e7f59d07995ecc1c3ca2d293314b28f71dfb9529c
+  checksum: 10c0/3d5343243a02fd44c048b5b9bdc401f86d9eacff269e157d9ace3aed42c88c44a07589324d47692453967495d54470d6d6374fc6fe43418a88d7f4aaa17a921f
   languageName: node
   linkType: hard
 
@@ -306,16 +306,6 @@ __metadata:
   dependencies:
     escalade: "npm:^3.2.0"
   checksum: 10c0/52a1f59677d3d2e4bdd998bbde6e7e3848ce52372c7bd394ad24555820cadbf6820886bc33bf42a8c73878c6f0b211334ce93c4f4fbf6d8e8022b72c5c39ebd5
-  languageName: node
-  linkType: hard
-
-"@commitlint/types@npm:^20.4.4":
-  version: 20.4.4
-  resolution: "@commitlint/types@npm:20.4.4"
-  dependencies:
-    conventional-commits-parser: "npm:^6.3.0"
-    picocolors: "npm:^1.1.1"
-  checksum: 10c0/5bbccd4c1e19e591de4f837ffee6d3e85ab50bb7f5911cee65177c41a3f48f869476915d1ac3686709d50845402d794f9f66c644086da4bd741db827b8fead55
   languageName: node
   linkType: hard
 
@@ -2396,7 +2386,7 @@ __metadata:
   resolution: "helm-config-scheme@workspace:."
   dependencies:
     "@commitlint/cli": "npm:20.5.0"
-    "@commitlint/config-conventional": "npm:20.4.4"
+    "@commitlint/config-conventional": "npm:20.5.0"
     "@semantic-release/changelog": "npm:6.0.3"
     "@semantic-release/commit-analyzer": "npm:13.0.1"
     "@semantic-release/exec": "npm:7.1.0"
