@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/jBouyoud/helm-config-scheme/compare/v2.0.1...v2.0.2) (2026-03-17)
+
+
+### Bug Fixes
+
+* resolve shared repository path for Helm v4 split plugins ([64c3632](https://github.com/jBouyoud/helm-config-scheme/commit/64c363217c2f2b0a51d5ab78e6e1a8e3fa544fca))
+
 ## [2.0.1](https://github.com/jBouyoud/helm-config-scheme/compare/v2.0.0...v2.0.1) (2026-03-05)
 
 
