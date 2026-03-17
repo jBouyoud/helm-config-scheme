@@ -3,7 +3,11 @@
 set -eu
 
 # Configuration directly for all scheme
-CONFIG_REPOSITORY="${HELM_CONFIG_SCHEME_REPOSITORY:-${HELM_PLUGIN_DIR}/repository}"
+# In Helm 4, CLI and getter are separate plugins with different HELM_PLUGIN_DIR.
+# Use HELM_PLUGINS (guaranteed by Helm) to resolve to a shared location that works for both.
+CONFIG_REPOSITORY="${HELM_CONFIG_SCHEME_REPOSITORY:-${HELM_PLUGINS:+${HELM_PLUGINS}/config-scheme/repository}}"
+# Fallback for environments where HELM_PLUGINS is not set
+CONFIG_REPOSITORY="${CONFIG_REPOSITORY:-${HELM_PLUGIN_DIR}/repository}"
 
 # Make sure that directory exists
 mkdir -p "${CONFIG_REPOSITORY}"
