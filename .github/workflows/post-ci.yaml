@@ -49,7 +49,7 @@ jobs:
           echo "notes=${RELEASE_NOTES}" >> $GITHUB_OUTPUT
 
       - name: 'Download artifact'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -72,7 +72,7 @@ jobs:
       - run: unzip pr.zip
 
       - name: 'release indicator - comment pr'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           RELEASE_TYPE: ${{steps.release-indicator.outputs.type}}
           RELEASE_NOTES: ${{steps.release-indicator.outputs.notes}}
@@ -125,7 +125,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
     steps:
       - name: 'Download artifact'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             var artifacts = await github.rest.actions.listWorkflowRunArtifacts({
