@@ -874,9 +874,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/github@npm:12.0.6":
-  version: 12.0.6
-  resolution: "@semantic-release/github@npm:12.0.6"
+"@semantic-release/github@npm:12.0.8":
+  version: 12.0.8
+  resolution: "@semantic-release/github@npm:12.0.8"
   dependencies:
     "@octokit/core": "npm:^7.0.0"
     "@octokit/plugin-paginate-rest": "npm:^14.0.0"
@@ -886,8 +886,8 @@ __metadata:
     aggregate-error: "npm:^5.0.0"
     debug: "npm:^4.3.4"
     dir-glob: "npm:^3.0.1"
-    http-proxy-agent: "npm:^7.0.0"
-    https-proxy-agent: "npm:^7.0.0"
+    http-proxy-agent: "npm:^9.0.0"
+    https-proxy-agent: "npm:^9.0.0"
     issue-parser: "npm:^7.0.0"
     lodash-es: "npm:^4.17.21"
     mime: "npm:^4.0.0"
@@ -897,7 +897,7 @@ __metadata:
     url-join: "npm:^5.0.0"
   peerDependencies:
     semantic-release: ">=24.1.0"
-  checksum: 10c0/2f6b24d73790dbe14e3ac08814fc56f069ec4c96a0e471eeb5247d934b525b54cee9a6d296e90edb6566bb309cf81a04084551e8201362dfd82ca436a2813706
+  checksum: 10c0/d2ad0385f840ea690a847b9c52dd80ef5ff528f6ec7d07b97448dbc522987e2effba9c0b5bc057fe989dc7c90735b0aaeacbdc4580cbdc03c4e30ffbe5da56c9
   languageName: node
   linkType: hard
 
@@ -1113,6 +1113,13 @@ __metadata:
   version: 3.0.1
   resolution: "abbrev@npm:3.0.1"
   checksum: 10c0/21ba8f574ea57a3106d6d35623f2c4a9111d9ee3e9a5be47baed46ec2457d2eac46e07a5c4a60186f88cb98abbe3e24f2d4cca70bc2b12f1692523e2209a9ccf
+  languageName: node
+  linkType: hard
+
+"agent-base@npm:9.0.0":
+  version: 9.0.0
+  resolution: "agent-base@npm:9.0.0"
+  checksum: 10c0/0274cd9a2a0ee78e3fbe0e80e7e0c41df27102466f7f7b3a67c045bb4c00fc517ce0496de3045b55f5eeec1a0e77d9d0a9b9320b0362bfe61e0c9e6d7ebaee76
   languageName: node
   linkType: hard
 
@@ -2397,7 +2404,7 @@ __metadata:
     "@semantic-release/commit-analyzer": "npm:13.0.1"
     "@semantic-release/exec": "npm:7.1.0"
     "@semantic-release/git": "npm:10.0.1"
-    "@semantic-release/github": "npm:12.0.6"
+    "@semantic-release/github": "npm:12.0.8"
     "@semantic-release/npm": "npm:13.1.5"
     "@semantic-release/release-notes-generator": "npm:14.1.0"
     husky: "npm:9.1.7"
@@ -2456,6 +2463,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"http-proxy-agent@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "http-proxy-agent@npm:9.0.0"
+  dependencies:
+    agent-base: "npm:9.0.0"
+    debug: "npm:^4.3.4"
+  checksum: 10c0/9ffd12ee9c827c0ec681c5066f0a1739c0e5b948c54ced9fc53313861b757f3bb3a2bdab2b8089d47757c1246aaea13bf4b4c304ef7b1e9f9d4bfe5dc87344e2
+  languageName: node
+  linkType: hard
+
 "https-proxy-agent@npm:^7.0.0, https-proxy-agent@npm:^7.0.1":
   version: 7.0.6
   resolution: "https-proxy-agent@npm:7.0.6"
@@ -2463,6 +2480,16 @@ __metadata:
     agent-base: "npm:^7.1.2"
     debug: "npm:4"
   checksum: 10c0/f729219bc735edb621fa30e6e84e60ee5d00802b8247aac0d7b79b0bd6d4b3294737a337b93b86a0bd9e68099d031858a39260c976dc14cdbba238ba1f8779ac
+  languageName: node
+  linkType: hard
+
+"https-proxy-agent@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "https-proxy-agent@npm:9.0.0"
+  dependencies:
+    agent-base: "npm:9.0.0"
+    debug: "npm:^4.3.4"
+  checksum: 10c0/1b55f3f79d60d5254f57afd888820e751cc28d39f4e19fd9fa098efa01ae74afcab315f02c6b067d9723fd49a0baf5eed1cde0a40a6a5bb397e3804cc81ac402
   languageName: node
   linkType: hard
 
